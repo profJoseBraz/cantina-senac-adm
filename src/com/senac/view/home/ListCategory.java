@@ -152,6 +152,17 @@ public class ListCategory extends javax.swing.JFrame {
                 jcbFilterTypeItemStateChanged(evt);
             }
         });
+        jcbFilterType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbFilterTypeActionPerformed(evt);
+            }
+        });
+
+        jtfFilterCriteria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfFilterCriteriaActionPerformed(evt);
+            }
+        });
 
         btnSearch.setText("Buscar");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -227,6 +238,14 @@ public class ListCategory extends javax.swing.JFrame {
             jtfFilterCriteria.setEnabled(true);
         }
     }//GEN-LAST:event_jcbFilterTypeItemStateChanged
+
+    private void jcbFilterTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFilterTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbFilterTypeActionPerformed
+
+    private void jtfFilterCriteriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfFilterCriteriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfFilterCriteriaActionPerformed
 
     /**
      * @param args the command line arguments
