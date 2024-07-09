@@ -6,6 +6,10 @@ package com.senac.view.home;
 
 import com.senac.helpers.formsRefs.Forms;
 import com.senac.helpers.layouts.CentralizePanel;
+import com.senac.view.home.Lists.ListCategory;
+import com.senac.view.home.Lists.ListPaymentTypes;
+import com.senac.view.home.Lists.ListProduct;
+import com.senac.view.home.Lists.ListProduction;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
