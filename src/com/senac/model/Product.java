@@ -4,6 +4,8 @@
  */
 package com.senac.model;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -12,6 +14,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Product {
     private int id;
+    
+    @SerializedName("categoria")
     private Category category;
     
     @SerializedName("nome")
@@ -29,15 +33,15 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, Category categoryId, String name, String description, Double value, String image) {
+    public Product(int id, Category category, String name, String description, Double value, String image) {
         this.id = id;
-        this.category = categoryId;
+        this.category = category;
         this.name = name;
         this.description = description;
         this.value = value;
         this.image = image;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -46,12 +50,12 @@ public class Product {
         this.id = id;
     }
 
-    public Category getCategoryId() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategoryId(Category categoryId) {
-        this.category = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getName() {
@@ -88,6 +92,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "id=" + id + ", categoryId=" + category + ", name=" + name + ", description=" + description + ", value=" + value + ", image=" + image + '}';
+        return "Product{" + "id=" + id + ", category=" + category + ", name=" + name + ", description=" + description + ", value=" + value + ", image=" + image + '}';
     }
 }

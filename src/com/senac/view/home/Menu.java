@@ -4,7 +4,12 @@
  */
 package com.senac.view.home;
 
+import com.senac.helpers.formsRefs.Forms;
 import com.senac.helpers.layouts.CentralizePanel;
+import com.senac.view.home.Lists.ListCategory;
+import com.senac.view.home.Lists.ListPaymentTypes;
+import com.senac.view.home.Lists.ListProduct;
+import com.senac.view.home.Lists.ListProduction;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -18,8 +23,9 @@ public class Menu extends javax.swing.JFrame {
      * Creates new form Menu
      */
     public Menu() {
-        initComponents();
         
+        initComponents();
+        setLocationRelativeTo(null);
 //        GridBagConstraints gbc = new GridBagConstraints();
 //        
 //        gbc.gridx = 0;
@@ -53,12 +59,14 @@ public class Menu extends javax.swing.JFrame {
         miCadProducao = new javax.swing.JMenuItem();
         miCadRestricao = new javax.swing.JMenuItem();
         miFazerPedido = new javax.swing.JMenuItem();
+        miCadFormPagamento = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         miVisuPedido = new javax.swing.JMenuItem();
         miVisuCardapio = new javax.swing.JMenuItem();
         miVisuCategoria = new javax.swing.JMenuItem();
         miVisuRestricao = new javax.swing.JMenuItem();
         miVisuProducao = new javax.swing.JMenuItem();
+        miListFormPagamento = new javax.swing.JMenuItem();
 
         jMenuItem6.setText("jMenuItem6");
 
@@ -81,7 +89,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         btnCardapio.setFont(new java.awt.Font("Sitka Text", 1, 24)); // NOI18N
-        btnCardapio.setText("Cardápio");
+        btnCardapio.setText("-");
         btnCardapio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCardapioActionPerformed(evt);
@@ -156,16 +164,39 @@ public class Menu extends javax.swing.JFrame {
         jMenu1.add(miCadProducao);
 
         miCadRestricao.setText("Cadastrar Restrição");
+        miCadRestricao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miCadRestricaoActionPerformed(evt);
+            }
+        });
         jMenu1.add(miCadRestricao);
 
         miFazerPedido.setText("Fazer Pedido");
+        miFazerPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miFazerPedidoActionPerformed(evt);
+            }
+        });
         jMenu1.add(miFazerPedido);
+
+        miCadFormPagamento.setText("Formas Pagamentos");
+        miCadFormPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miCadFormPagamentoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(miCadFormPagamento);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Visualizar");
 
         miVisuPedido.setText("Pedidos");
+        miVisuPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVisuPedidoActionPerformed(evt);
+            }
+        });
         jMenu2.add(miVisuPedido);
 
         miVisuCardapio.setText("Cardapio");
@@ -177,13 +208,36 @@ public class Menu extends javax.swing.JFrame {
         jMenu2.add(miVisuCardapio);
 
         miVisuCategoria.setText("Categoria");
+        miVisuCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVisuCategoriaActionPerformed(evt);
+            }
+        });
         jMenu2.add(miVisuCategoria);
 
         miVisuRestricao.setText("Restrições");
+        miVisuRestricao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVisuRestricaoActionPerformed(evt);
+            }
+        });
         jMenu2.add(miVisuRestricao);
 
         miVisuProducao.setText("Produção");
+        miVisuProducao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVisuProducaoActionPerformed(evt);
+            }
+        });
         jMenu2.add(miVisuProducao);
+
+        miListFormPagamento.setText("Formas Pagamentos");
+        miListFormPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miListFormPagamentoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(miListFormPagamento);
 
         jMenuBar1.add(jMenu2);
 
@@ -210,32 +264,108 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVerPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPedidosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnVerPedidosActionPerformed
+        if (Forms.ListOrder == null)
+            Forms.ListProduct = new ListProduct();
+        
+        Forms.ListProduct.setVisible(true);    }//GEN-LAST:event_btnVerPedidosActionPerformed
 
     private void miCadProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCadProdActionPerformed
-        // TODO add your handling code here:
+        if (Forms.CadProduct == null)
+//            Forms.CadProduct = new CadProduct();
+        
+        Forms.CadProduct.setVisible(true);
     }//GEN-LAST:event_miCadProdActionPerformed
 
     private void btnAddPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPedidosActionPerformed
-        // TODO add your handling code here:
+        if (Forms.CadOrder == null)
+//            Forms.CadOrder = new CadOrder();
+        
+        Forms.CadOrder.setVisible(true);
     }//GEN-LAST:event_btnAddPedidosActionPerformed
 
     private void miCadCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCadCategoriaActionPerformed
-        // TODO add your handling code here:
+        if (Forms.CadCatergory == null)
+//            Forms.CadCatergory = new CadCatergory();
+        
+        Forms.CadCatergory.setVisible(true);
     }//GEN-LAST:event_miCadCategoriaActionPerformed
 
     private void miCadProducaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCadProducaoActionPerformed
-        // TODO add your handling code here:
+        if (Forms.CadProduction == null)
+//            Forms.CadProduction = new CadProduction();
+
+        Forms.CadProduction.setVisible(true);
     }//GEN-LAST:event_miCadProducaoActionPerformed
 
     private void btnCardapioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCardapioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCardapioActionPerformed
+        if(Forms.ListProduct == null)
+            Forms.ListProduct = new ListProduct();
+        
+        Forms.ListProduct.setVisible(true);    }//GEN-LAST:event_btnCardapioActionPerformed
 
     private void miVisuCardapioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVisuCardapioActionPerformed
-        // TODO add your handling code here:
+        if(Forms.ListProduct == null)
+            Forms.ListProduct = new ListProduct();
+        
+        Forms.ListProduct.setVisible(true);
     }//GEN-LAST:event_miVisuCardapioActionPerformed
+
+    private void miVisuPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVisuPedidoActionPerformed
+        if (Forms.ListOrder == null)
+            Forms.ListProduct = new ListProduct();
+        
+        Forms.ListProduct.setVisible(true);
+    }//GEN-LAST:event_miVisuPedidoActionPerformed
+
+    private void miCadRestricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCadRestricaoActionPerformed
+    if (Forms.CadRestricao == null)
+//        Forms.CadRestricao = new CadRestricao();
+    
+        Forms.CadRestricao.setVisible(true);
+    }//GEN-LAST:event_miCadRestricaoActionPerformed
+
+    private void miFazerPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miFazerPedidoActionPerformed
+        if (Forms.CadOrder == null)
+//            Forms.CadOrder = new CadOrder();
+        
+        Forms.CadOrder.setVisible(true);
+    }//GEN-LAST:event_miFazerPedidoActionPerformed
+
+    private void miVisuCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVisuCategoriaActionPerformed
+        if (Forms.ListCategory == null)
+            Forms.ListCategory = new ListCategory();
+        
+        Forms.ListCategory.setVisible(true);
+    }//GEN-LAST:event_miVisuCategoriaActionPerformed
+
+    private void miVisuRestricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVisuRestricaoActionPerformed
+        if (Forms.ListRestricao == null)
+//            Forms.ListRestricao = new ListRestricao();
+        
+        Forms.ListRestricao.setVisible(true);
+    }//GEN-LAST:event_miVisuRestricaoActionPerformed
+
+    private void miVisuProducaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVisuProducaoActionPerformed
+        if (Forms.listProduction == null)
+            Forms.listProduction = new ListProduction();
+        
+        Forms.listProduction.setVisible(true);
+    }//GEN-LAST:event_miVisuProducaoActionPerformed
+
+    private void miListFormPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miListFormPagamentoActionPerformed
+        if (Forms.ListPaymentTypes == null)
+            Forms.ListPaymentTypes = new ListPaymentTypes();
+        
+        Forms.ListPaymentTypes.setVisible(true);
+    }//GEN-LAST:event_miListFormPagamentoActionPerformed
+
+    private void miCadFormPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCadFormPagamentoActionPerformed
+            if (Forms.CadPaymentTypes == null)
+//            Forms.CadPaymentTypes = new CadPaymentTypes();
+        
+        Forms.CadPaymentTypes.setVisible(true);
+
+    }//GEN-LAST:event_miCadFormPagamentoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,7 +378,7 @@ public class Menu extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -283,10 +413,12 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jpButtons;
     private javax.swing.JMenuItem miCadCategoria;
+    private javax.swing.JMenuItem miCadFormPagamento;
     private javax.swing.JMenuItem miCadProd;
     private javax.swing.JMenuItem miCadProducao;
     private javax.swing.JMenuItem miCadRestricao;
     private javax.swing.JMenuItem miFazerPedido;
+    private javax.swing.JMenuItem miListFormPagamento;
     private javax.swing.JMenuItem miVisuCardapio;
     private javax.swing.JMenuItem miVisuCategoria;
     private javax.swing.JMenuItem miVisuPedido;

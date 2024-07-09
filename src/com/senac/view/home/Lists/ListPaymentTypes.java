@@ -4,6 +4,19 @@
  */
 package com.senac.view.home.Lists;
 
+import com.senac.consumer.CategoryClient;
+import com.senac.consumer.PaymentMethodClient;
+import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.http.HttpClient;
+import com.senac.model.Category;
+import com.senac.model.PaymentMethod;
+import com.senac.view.home.LoadingDialog;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author grander.3993
@@ -16,8 +29,35 @@ public class ListPaymentTypes extends javax.swing.JFrame {
     public ListPaymentTypes() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
+        
+                listAll(
+            (DefaultTableModel) tablePaymentTypes.getModel(), 
+            new PaymentMethodClient().getAllPaymentMethods(new CertManager(), new HttpClient()),
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tablePaymentTypes)));
+    
+//        setComponentsInitialState();
+        
+        setLocationRelativeTo(null);
     }
 
+    
+     public void listAll(DefaultTableModel tableModel, CompletableFuture<List<PaymentMethod>> futurePayments, LoadingDialog loadingDialog){
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+        
+        futurePayments.thenAccept(Payments -> {
+            tableModel.setRowCount(0);
+        
+            for (PaymentMethod paymentMethod : Payments) {
+                tableModel.addRow(new Object[]{paymentMethod.getId(), paymentMethod.getName()});
+            }
+            
+            loadingDialog.dispose();
+        }).exceptionally(ex -> {
+            System.err.println("Erro ao listar formas de pagamento: " + ex.getMessage());
+            loadingDialog.dispose();
+            return null;
+        });
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
