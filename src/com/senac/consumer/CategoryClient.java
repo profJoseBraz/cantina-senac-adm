@@ -9,8 +9,10 @@ import com.google.gson.reflect.TypeToken;
 import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.http.HttpClient;
 import com.senac.model.Category;
+import com.senac.view.home.LoadingDialog;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -43,6 +45,17 @@ public class CategoryClient {
             return categories;
         }).exceptionally(ex -> {
             System.err.println("Método: getCategoryByName" + ex.getMessage());
+            return null;
+        });
+    }
+    
+    public CompletableFuture<Void> postCategory(CertManager certManager, HttpClient httpClient, String body){
+        return CompletableFuture.runAsync(() -> {
+            certManager.trustAllCerts();
+        
+            httpClient.makePostRequest("http://localhost:8080/category/add", body);
+        }).exceptionally(ex -> {
+            System.err.println("Método: postCategory" + ex.getMessage());
             return null;
         });
     }

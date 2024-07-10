@@ -7,7 +7,10 @@ package com.senac.helpers.http;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -38,6 +41,46 @@ public class HttpClient {
                 response.append(inputLine);
             }
             in.close();
+            
+            this.isLoading = false;
+            
+            return response;
+        }catch(IOException e){
+            System.err.println(e.getMessage());
+            this.isLoading = false;
+            return null;
+        }
+    }
+    
+    public StringBuilder makePostRequest(String url, String body){
+        try{
+            this.isLoading = true;
+            
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            // Configurações da requisição
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+
+            // Dados do body
+            con.setDoOutput(true);
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = body.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            // Ler a resposta da requisição
+            StringBuilder response = new StringBuilder();
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+            }
+            
+            System.out.println(response.toString());
             
             this.isLoading = false;
             
