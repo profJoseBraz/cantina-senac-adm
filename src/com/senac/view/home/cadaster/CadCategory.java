@@ -10,6 +10,7 @@ import com.senac.helpers.http.HttpClient;
 import com.senac.view.home.LoadingDialog;
 import java.util.concurrent.CompletableFuture;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -25,14 +26,21 @@ public class CadCategory extends javax.swing.JFrame {
         initComponents();
     }
 
-    public void post(CompletableFuture<Void> futureCategory, LoadingDialog loadingDialog){
+    public void post(CompletableFuture<Boolean> futureCategory, LoadingDialog loadingDialog, String successMessage, String errorMessage){
         SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
         
-        futureCategory.thenAccept(categorie -> {
-            loadingDialog.dispose();
+        futureCategory.thenAccept(success -> {
+            SwingUtilities.invokeLater(() -> {
+                loadingDialog.dispose();
+                if (success) {
+                    JOptionPane.showMessageDialog(null, successMessage);
+                } else {
+                    JOptionPane.showMessageDialog(null, errorMessage);
+                }
+            });
         }).exceptionally(ex -> {
-            System.err.println("Local: post" + ex.getMessage());
-            loadingDialog.dispose();
+            System.err.println("Classe: CadCategory | Método: post: " + ex.getMessage());
+            SwingUtilities.invokeLater(loadingDialog::dispose);
             return null;
         });
     }
@@ -220,7 +228,9 @@ public class CadCategory extends javax.swing.JFrame {
                 new CertManager(), 
                 new HttpClient(), 
                 body), 
-            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)));
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)),
+            "Categoria salva com sucesso.",
+            "Erro ao salvar a categoria.");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -18,6 +18,8 @@ import javax.net.ssl.HttpsURLConnection;
  * @author 10156
  */
 public class HttpClient {
+    public static final String API_URL = "https://cantina-senac-api-prod.up.railway.app";
+    
     private boolean isLoading;
     
     public boolean isLoading(){
@@ -46,13 +48,13 @@ public class HttpClient {
             
             return response;
         }catch(IOException e){
-            System.err.println(e.getMessage());
+            System.err.println("Classe: HttpClient | Método: makeGetRequest: " + e.getMessage());
             this.isLoading = false;
             return null;
         }
     }
     
-    public StringBuilder makePostRequest(String url, String body){
+    public boolean makePostRequest(String url, String body){
         try{
             this.isLoading = true;
             
@@ -84,11 +86,12 @@ public class HttpClient {
             
             this.isLoading = false;
             
-            return response;
+            return true;
         }catch(IOException e){
-            System.err.println(e.getMessage());
+            System.err.println("Classe: HttpClient | Método: makePostRequest: " + e.getMessage());
             this.isLoading = false;
-            return null;
+            
+            return false;
         }
     }
 }
