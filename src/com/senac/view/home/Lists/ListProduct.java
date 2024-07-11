@@ -5,7 +5,7 @@
 package com.senac.view.home.Lists;
 
 import com.senac.consumer.CategoryClient;
-    import com.senac.consumer.ProductsClient;
+import com.senac.consumer.ProductsClient;
 import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.http.HttpClient;
 import com.senac.model.Category;
@@ -62,22 +62,41 @@ public class ListProduct extends javax.swing.JFrame {
         }
 
         public void listByName(DefaultTableModel tableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
-        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(products -> {
+                tableModel.setRowCount(0);
+
+                for (Product product : products) {
+                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), product.getValue()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Produtos por Nome" + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
         
-        futureProducts.thenAccept(products -> {
-            tableModel.setRowCount(0);
         
-            for (Product product : products) {
-                tableModel.addRow(new Object[]{product.getId(), product.getName()});
-            }
-            
-            loadingDialog.dispose();
-        }).exceptionally(ex -> {
-            System.err.println("Erro ao listar Produtos por Nome" + ex.getMessage());
-            loadingDialog.dispose();
-            return null;
-        });
-    }
+        public void listByCategory(DefaultTableModel TableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(products -> {
+                TableModel.setRowCount(0);
+
+                for (Product product : products) {
+                    TableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), product.getValue()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar produtos: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -229,6 +248,12 @@ public class ListProduct extends javax.swing.JFrame {
             case 0:
                 listAll((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), new LoadingDialog(this));
                 break;
+                
+            case 2:
+                String category = jtfFilterCriteria.getText();
+                listByCategory((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductByCategory(new CertManager(), new HttpClient(), category), new LoadingDialog(this));
+                break;
+                
             case 3:
                 String name = jtfFilterCriteria.getText();
                 listByName((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductByName(new CertManager(), new HttpClient(), name), new LoadingDialog(this));

@@ -81,7 +81,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         btnVerPedidos.setFont(new java.awt.Font("Sitka Text", 1, 24)); // NOI18N
-        btnVerPedidos.setText("Ver Pedidos");
+        btnVerPedidos.setText("Ver Produtos");
         btnVerPedidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVerPedidosActionPerformed(evt);
@@ -191,7 +191,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu2.setText("Visualizar");
 
-        miVisuPedido.setText("Pedidos");
+        miVisuPedido.setText("Produtos");
         miVisuPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miVisuPedidoActionPerformed(evt);

@@ -4,6 +4,18 @@
  */
 package com.senac.view.home.Lists;
 
+import com.senac.consumer.ProductionClient;
+import com.senac.consumer.ProductsClient;
+import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.http.HttpClient;
+import com.senac.model.Production;
+import com.senac.view.home.LoadingDialog;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author grander.3993
@@ -15,8 +27,60 @@ public class ListProduction extends javax.swing.JFrame {
      */
     public ListProduction() {
         initComponents();
-        setExtendedState(MAXIMIZED_BOTH);
-    }
+        listAllProduction(
+                (DefaultTableModel) tableProduction.getModel(), 
+                new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), 
+                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableProduction)));
+
+            setComponentsInitialState();
+
+            setLocationRelativeTo(null);
+        }
+
+        private void setComponentsInitialState(){
+            jtfFilterCriteria.setEnabled(false);
+        }
+
+        public void listAllProduction(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(productions -> {
+                tableModel.setRowCount(0);
+
+                for (Production production : productions) {
+                    tableModel.addRow(new Object[]{production.getId(), production.getDate(), production.getAmount(), production.getObservation(),
+                    production.getProduct().getId() ,production.getProduct().getCategory().getName(), production.getProduct().getName(),
+                    production.getProduct().getDescription(), production.getProduct().getValue()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar a produção: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
+            
+            public void listByCategory(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(productions -> {
+                tableModel.setRowCount(0);
+
+                for (Production production : productions) {
+                    tableModel.addRow(new Object[]{production.getId(), production.getDate(), production.getAmount(), production.getObservation(),
+                    production.getProduct().getId() ,production.getProduct().getCategory().getName(), production.getProduct().getName(),
+                    production.getProduct().getDescription(), production.getProduct().getValue()});                
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar produção: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+            }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,8 +104,23 @@ public class ListProduction extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 
         btnSearch.setText("Buscar");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "DATA", "NOME DO PRODUTO", "CATEGORIA" }));
+        jcbFilterType.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbFilterTypeItemStateChanged(evt);
+            }
+        });
+        jcbFilterType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbFilterTypeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -126,6 +205,30 @@ public class ListProduction extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jcbFilterTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFilterTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbFilterTypeActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+       switch(jcbFilterType.getSelectedIndex()){
+            case 0:
+                listAllProduction((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), new LoadingDialog(this));
+                break;
+            case 4:
+                String category = jtfFilterCriteria.getText();
+                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByCategory(new CertManager(), new HttpClient(), category), new LoadingDialog(this));
+                break;
+        }
+            }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void jcbFilterTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbFilterTypeItemStateChanged
+        if(jcbFilterType.getSelectedIndex() == 0){
+            jtfFilterCriteria.setText("");
+            jtfFilterCriteria.setEnabled(false);
+        }else{
+            jtfFilterCriteria.setEnabled(true);
+        }    }//GEN-LAST:event_jcbFilterTypeItemStateChanged
 
     /**
      * @param args the command line arguments
