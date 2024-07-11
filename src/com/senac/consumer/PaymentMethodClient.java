@@ -12,7 +12,7 @@ public class PaymentMethodClient {
     public CompletableFuture<List<PaymentMethod>> getAllPaymentMethods(CertManager certManager, HttpClient httpClient) {
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
-            StringBuffer res = httpClient.makeGetRequest("https://cantina-senac-api-prod.up.railway.app/PaymentMethod", "");
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/paymentMethod", "");
 
             Gson gson = new Gson();
             List<PaymentMethod> paymentMethods = gson.fromJson(res.toString(), new TypeToken<List<PaymentMethod>>() {}.getType());

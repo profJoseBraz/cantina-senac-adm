@@ -4,6 +4,15 @@
  */
 package com.senac.view.home.cadaster;
 
+import com.senac.consumer.CategoryClient;
+import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.http.HttpClient;
+import com.senac.view.home.LoadingDialog;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author grander.3993
@@ -17,6 +26,25 @@ public class CadCategory extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void post(CompletableFuture<Boolean> futureCategory, LoadingDialog loadingDialog, String successMessage, String errorMessage){
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+        
+        futureCategory.thenAccept(success -> {
+            SwingUtilities.invokeLater(() -> {
+                loadingDialog.dispose();
+                if (success) {
+                    JOptionPane.showMessageDialog(null, successMessage);
+                } else {
+                    JOptionPane.showMessageDialog(null, errorMessage);
+                }
+            });
+        }).exceptionally(ex -> {
+            System.err.println("Classe: CadCategory | Método: post: " + ex.getMessage());
+            SwingUtilities.invokeLater(loadingDialog::dispose);
+            return null;
+        });
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -110,6 +138,11 @@ public class CadCategory extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Cadastrar");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
@@ -179,6 +212,26 @@ public class CadCategory extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String body =   
+            """
+                {
+                    "name": "%s"
+                }
+            """;
+        
+        body = String.format(body, jTextField1.getText()); 
+        
+        post(
+            new CategoryClient().postCategory(
+                new CertManager(), 
+                new HttpClient(), 
+                body), 
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)),
+            "Categoria salva com sucesso.",
+            "Erro ao salvar a categoria.");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

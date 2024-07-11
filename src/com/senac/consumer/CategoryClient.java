@@ -20,14 +20,14 @@ public class CategoryClient {
     public CompletableFuture<List<Category>> getAllCategories(CertManager certManager, HttpClient httpClient){
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
-            StringBuffer res = httpClient.makeGetRequest("https://cantina-senac-api-prod.up.railway.app/category", "");
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/category", "");
 
             Gson gson = new Gson();
             List<Category> categories = gson.fromJson(res.toString(), new TypeToken<List<Category>>(){}.getType());
 
             return categories;
         }).exceptionally(ex -> {
-            System.err.println("Método: getAllCategories" + ex.getMessage());
+            System.err.println("Classe: CategoryClient | Método: getAllCategories" + ex.getMessage());
             return null;
         });
     }
@@ -35,15 +35,32 @@ public class CategoryClient {
     public CompletableFuture<List<Category>> getCategoryByName(CertManager certManager, HttpClient httpClient, String name){
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
-            StringBuffer res = httpClient.makeGetRequest("https://cantina-senac-api-prod.up.railway.app/category", "name=" + name);
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/category", "name=" + name);
 
             Gson gson = new Gson();
             List<Category> categories = gson.fromJson(res.toString(), new TypeToken<List<Category>>(){}.getType());
 
             return categories;
         }).exceptionally(ex -> {
-            System.err.println("Método: getCategoryByName" + ex.getMessage());
+            System.err.println("Classe: CategoryClient | Método: getCategoryByName" + ex.getMessage());
             return null;
         });
+    }
+    
+    public CompletableFuture<Boolean> postCategory(CertManager certManager, HttpClient httpClient, String body){
+        CompletableFuture<Boolean> resultFuture = new CompletableFuture<>();
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                certManager.trustAllCerts();
+                boolean res = httpClient.makePostRequest(HttpClient.API_URL + "/category/add", body);
+                resultFuture.complete(res);
+            } catch (Exception ex) {
+                System.err.println("Classe: CategoryClient | Método: postCategory: " + ex.getMessage());
+                resultFuture.completeExceptionally(ex);
+            }
+        });
+
+        return resultFuture;
     }
 }
