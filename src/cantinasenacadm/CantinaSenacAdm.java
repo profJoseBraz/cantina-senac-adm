@@ -18,12 +18,13 @@ public class CantinaSenacAdm {
      */
     public static void main(String[] args) {
         try{
-            String from = "C:\\Users\\jose_\\OneDrive\\Área de Trabalho\\agua-com-gas.png";
-            String to = "src/img/produtos/bebidas/";
+            String file = "agua-com-gas.png";
+            String filePath = "C:\\Users\\jose_\\OneDrive\\Área de Trabalho\\" + file;
+            String gitHubPath = "src/img/produtos/bebidas/";
             
-            HttpGithubUploader.upload(from, to);
+            HttpGithubUploader.upload(filePath, gitHubPath);
         }catch(IOException e){
-            
+            System.err.println(e.getMessage());
         }
     }
 }

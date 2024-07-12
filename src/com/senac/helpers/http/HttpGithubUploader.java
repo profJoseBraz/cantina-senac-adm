@@ -25,7 +25,7 @@ public class HttpGithubUploader {
     private static final String GITHUB_USERNAME = "banco-imgs";
     private static final String GITHUB_REPO = "bd-imagens";
     private static final String GITHUB_BRANCH = "main";
-    private static final String GITHUB_TOKEN = "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"; // Substitua pelo seu token de acesso
+    private static final String GITHUB_TOKEN = "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";
 
     public static void upload(String filePath, String gitHubPath) throws IOException {
         File file = new File(filePath);
