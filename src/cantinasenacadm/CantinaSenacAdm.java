@@ -4,10 +4,8 @@
  */
 package cantinasenacadm;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.senac.helpers.http.HttpClient;
-import com.senac.model.Category;
+import com.senac.helpers.http.HttpGithubUploader;
+import java.io.IOException;
 
 /**
  *
@@ -19,21 +17,13 @@ public class CantinaSenacAdm {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        HttpClient httpClient = new HttpClient();
-        
-        String body = """
-                        {
-                            "name": "%s"
-                        }
-                       """;
-        
-        String valor = "aasdfsadfadsfadsf";
-        
-        body = String.format(body, valor);
-        
-        System.err.println(body);
-        
-        httpClient.makePostRequest("http://localhost:8080/category/add", body);
+        try{
+            String from = "C:\\Users\\jose_\\OneDrive\\Área de Trabalho\\agua-com-gas.png";
+            String to = "src/img/produtos/bebidas/";
+            
+            HttpGithubUploader.upload(from, to);
+        }catch(IOException e){
+            
+        }
     }
-    
 }
