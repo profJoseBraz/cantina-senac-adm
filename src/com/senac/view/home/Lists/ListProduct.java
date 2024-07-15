@@ -4,6 +4,19 @@
  */
 package com.senac.view.home.Lists;
 
+import com.senac.consumer.CategoryClient;
+    import com.senac.consumer.ProductsClient;
+import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.http.HttpClient;
+import com.senac.model.Category;
+import com.senac.model.Product;
+import com.senac.view.home.LoadingDialog;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author grander.3993
@@ -14,10 +27,57 @@ public class ListProduct extends javax.swing.JFrame {
      * Creates new form ListProduct
      */
     public ListProduct() {
-        initComponents();
-        setExtendedState(MAXIMIZED_BOTH);
-    }
+            initComponents();
 
+            listAll(
+                (DefaultTableModel) tableProduct.getModel(), 
+                new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), 
+                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableProduct)));
+
+            setComponentsInitialState();
+
+            setLocationRelativeTo(null);
+        }
+
+        private void setComponentsInitialState(){
+            jtfFilterCriteria.setEnabled(false);
+        }
+
+        public void listAll(DefaultTableModel tableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(products -> {
+                tableModel.setRowCount(0);
+
+                for (Product product : products ) {
+                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), product.getValue()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar produtos: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
+
+        public void listByName(DefaultTableModel tableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+        
+        futureProducts.thenAccept(products -> {
+            tableModel.setRowCount(0);
+        
+            for (Product product : products) {
+                tableModel.addRow(new Object[]{product.getId(), product.getName()});
+            }
+            
+            loadingDialog.dispose();
+        }).exceptionally(ex -> {
+            System.err.println("Erro ao listar Produtos por Nome" + ex.getMessage());
+            loadingDialog.dispose();
+            return null;
+        });
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,8 +100,29 @@ public class ListProduct extends javax.swing.JFrame {
         jPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 
         btnSearch.setText("Buscar");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        jtfFilterCriteria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfFilterCriteriaActionPerformed(evt);
+            }
+        });
 
         jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "CATEGORIA", "NOME", "DESCRIÇÃO", "VALOR MAIOR QUE", "VALOR MENOR QUE", " " }));
+        jcbFilterType.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbFilterTypeItemStateChanged(evt);
+            }
+        });
+        jcbFilterType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbFilterTypeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
@@ -118,6 +199,42 @@ public class ListProduct extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+//    private void jcbFilterTypeItemStateChanged(java.awt.event.ItemEvent evt) {                                               
+//        if(jcbFilterType.getSelectedIndex() == 0){
+//            jtfFilterCriteria.setText("");
+//            jtfFilterCriteria.setEnabled(false);
+//        }else{
+//            jtfFilterCriteria.setEnabled(true);
+//        }
+//    }               
+    private void jcbFilterTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFilterTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbFilterTypeActionPerformed
+
+    private void jtfFilterCriteriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfFilterCriteriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfFilterCriteriaActionPerformed
+
+    private void jcbFilterTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbFilterTypeItemStateChanged
+        if(jcbFilterType.getSelectedIndex() == 0){
+            jtfFilterCriteria.setText("");
+            jtfFilterCriteria.setEnabled(false);
+        }else{
+            jtfFilterCriteria.setEnabled(true);
+        }
+    }//GEN-LAST:event_jcbFilterTypeItemStateChanged
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+       switch(jcbFilterType.getSelectedIndex()){
+            case 0:
+                listAll((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), new LoadingDialog(this));
+                break;
+            case 3:
+                String name = jtfFilterCriteria.getText();
+                listByName((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductByName(new CertManager(), new HttpClient(), name), new LoadingDialog(this));
+                break;
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments

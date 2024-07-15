@@ -42,6 +42,8 @@ public class Forms {
     //Tela de Menu
     public static JFrame TelaMenu;
 
+
     //Tela para selecionar os arquivos
     public static JFrame FileChooser;
+
 }

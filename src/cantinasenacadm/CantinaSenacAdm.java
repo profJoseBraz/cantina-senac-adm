@@ -4,11 +4,8 @@
  */
 package cantinasenacadm;
 
-import com.senac.consumer.CategoryClient;
-import com.senac.helpers.cert.CertManager;
-import com.senac.helpers.http.HttpClient;
-import com.senac.model.Category;
-import java.util.List;
+import com.senac.helpers.http.HttpGithubUploader;
+import java.io.IOException;
 
 /**
  *
@@ -20,7 +17,14 @@ public class CantinaSenacAdm {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        try{
+            String file = "agua-com-gas.png";
+            String filePath = "C:\\Users\\jose_\\OneDrive\\Área de Trabalho\\" + file;
+            String gitHubPath = "src/img/produtos/bebidas/";
+            
+            HttpGithubUploader.upload(filePath, gitHubPath);
+        }catch(IOException e){
+            System.err.println(e.getMessage());
+        }
     }
-    
 }

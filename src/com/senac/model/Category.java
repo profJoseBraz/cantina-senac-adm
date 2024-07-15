@@ -4,6 +4,7 @@
  */
 package com.senac.model;
 
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 
 /**

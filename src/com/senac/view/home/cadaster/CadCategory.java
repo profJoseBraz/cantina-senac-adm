@@ -226,6 +226,26 @@ public class CadCategory extends javax.swing.JFrame {
             "Erro ao salvar a categoria.");
     }//GEN-LAST:event_jbtnCadastrarActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String body =   
+            """
+                {
+                    "name": "%s"
+                }
+            """;
+        
+        body = String.format(body, jtfName.getText()); 
+        
+        post(
+            new CategoryClient().postCategory(
+                new CertManager(), 
+                new HttpClient(), 
+                body), 
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)),
+            "Categoria salva com sucesso.",
+            "Erro ao salvar a categoria.");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
