@@ -4,8 +4,11 @@
  */
 package cantinasenacadm;
 
+import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.http.HttpGithubUploader;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  *
@@ -16,10 +19,10 @@ public class CantinaSenacAdm {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws KeyManagementException, NoSuchAlgorithmException {
         try{
-            String file = "agua-com-gas.png";
-            String filePath = "C:\\Users\\jose_\\OneDrive\\Área de Trabalho\\" + file;
+            String file = "Novo(a) Documento de Texto.txt";
+            String filePath = "C:\\Users\\10156\\Desktop\\" + file;
             String gitHubPath = "src/img/produtos/bebidas/";
             
             HttpGithubUploader.upload(filePath, gitHubPath);

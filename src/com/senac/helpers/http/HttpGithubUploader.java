@@ -7,13 +7,23 @@ package com.senac.helpers.http;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.senac.helpers.cert.CertManager;
 import okhttp3.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Base64;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  *
@@ -25,9 +35,41 @@ public class HttpGithubUploader {
     private static final String GITHUB_USERNAME = "banco-imgs";
     private static final String GITHUB_REPO = "bd-imagens";
     private static final String GITHUB_BRANCH = "main";
-    private static final String GITHUB_TOKEN = "";
+    private static final String GITHUB_TOKEN = "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";
 
-    public static void upload(String filePath, String gitHubPath) throws IOException {
+    public static void upload(String filePath, String gitHubPath) throws IOException, KeyManagementException, NoSuchAlgorithmException {
+        // Configura o SSLContext para aceitar todos os certificados =========================================
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
+
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+                }
+        };
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, trustAllCerts, new SecureRandom());
+
+        // Cria um SSLSocketFactory com o SSLContext configurado
+        SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+        // Configura o OkHttpClient com o SSLSocketFactory e TrustManager personalizado
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
+                .hostnameVerifier((hostname, session) -> true); // Desabilita a verificação de hostname, se necessário
+
+        OkHttpClient client = clientBuilder.build();
+        
+        // =========================================
+        
         File file = new File(filePath);
 
         if (!file.exists()) {
@@ -42,7 +84,7 @@ public class HttpGithubUploader {
         String commitMessage = "Novo arquivo adicionado (" + file.getName() + ")";
         String branch = GITHUB_BRANCH;
 
-        OkHttpClient client = new OkHttpClient();
+//        OkHttpClient client = new OkHttpClient();
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("message", commitMessage);
