@@ -15,6 +15,8 @@ import javax.net.ssl.HttpsURLConnection;
  * @author 10156
  */
 public class HttpClient {
+
+    public static String API_URL;
     private boolean isLoading;
     
     public boolean isLoading(){
@@ -47,5 +49,9 @@ public class HttpClient {
             this.isLoading = false;
             return null;
         }
+    }
+
+    public boolean makePostRequest(String string, String body) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

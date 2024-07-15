@@ -46,4 +46,21 @@ public class CategoryClient {
             return null;
         });
     }
+    
+    public CompletableFuture<Boolean> postCategory(CertManager certManager, HttpClient httpClient, String body){
+        CompletableFuture<Boolean> resultFuture = new CompletableFuture<>();
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                certManager.trustAllCerts();
+                boolean res = httpClient.makePostRequest(HttpClient.API_URL + "/category/add", body);
+                resultFuture.complete(res);
+            } catch (Exception ex) {
+                System.err.println("Classe: CategoryClient | Método: postCategory: " + ex.getMessage());
+                resultFuture.completeExceptionally(ex);
+            }
+        });
+
+        return resultFuture;
+    }
 }

@@ -4,6 +4,15 @@
  */
 package com.senac.view.home.cadaster;
 
+import com.senac.consumer.CategoryClient;
+import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.http.HttpClient;
+import com.senac.view.home.LoadingDialog;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author grander.3993
@@ -17,6 +26,25 @@ public class CadCategory extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void post(CompletableFuture<Boolean> futureCategory, LoadingDialog loadingDialog, String successMessage, String errorMessage){
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+        
+        futureCategory.thenAccept(success -> {
+            SwingUtilities.invokeLater(() -> {
+                loadingDialog.dispose();
+                if (success) {
+                    JOptionPane.showMessageDialog(null, successMessage);
+                } else {
+                    JOptionPane.showMessageDialog(null, errorMessage);
+                }
+            });
+        }).exceptionally(ex -> {
+            System.err.println("Classe: CadCategory | Método: post: " + ex.getMessage());
+            SwingUtilities.invokeLater(loadingDialog::dispose);
+            return null;
+        });
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,23 +136,6 @@ public class CadCategory extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-<<<<<<< Updated upstream
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Cadastrar");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-=======
-        jbtnCadastrar.setBackground(new java.awt.Color(0, 0, 0));
-        jbtnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnCadastrar.setText("Cadastrar");
-        jbtnCadastrar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jbtnCadastrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnCadastrarActionPerformed(evt);
-            }
-        });
->>>>>>> Stashed changes
-
         jbtnDeletar.setBackground(new java.awt.Color(0, 0, 0));
         jbtnDeletar.setForeground(new java.awt.Color(255, 255, 255));
         jbtnDeletar.setText("Excluir");
@@ -194,8 +205,7 @@ public class CadCategory extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfIdActionPerformed
 
-<<<<<<< Updated upstream
-=======
+
     private void jbtnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCadastrarActionPerformed
         String body =   
             """
@@ -216,7 +226,6 @@ public class CadCategory extends javax.swing.JFrame {
             "Erro ao salvar a categoria.");
     }//GEN-LAST:event_jbtnCadastrarActionPerformed
 
->>>>>>> Stashed changes
     /**
      * @param args the command line arguments
      */
