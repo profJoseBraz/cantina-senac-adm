@@ -44,6 +44,7 @@ public class FileChooser extends javax.swing.JFrame {
                 BufferedImage imagem = ImageIO.read(Constantes.FilePath);
                 ImageIcon icon = new ImageIcon(imagem);
                 Constantes.SelectedFileIMG = icon;
+                Constantes.FilePath = selectedFile;
                 
                 this.dispose();
                 
@@ -51,6 +52,7 @@ public class FileChooser extends javax.swing.JFrame {
                     Forms.CadProduct = new CadProduct();
                     
                 Forms.CadProduct.setVisible(true);
+                
                 
             } catch (IOException ex) {
                 Logger.getLogger(FileChooser.class.getName()).log(Level.SEVERE, null, ex);
