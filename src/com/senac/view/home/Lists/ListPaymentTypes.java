@@ -4,11 +4,9 @@
  */
 package com.senac.view.home.Lists;
 
-import com.senac.consumer.CategoryClient;
 import com.senac.consumer.PaymentMethodClient;
 import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.http.HttpClient;
-import com.senac.model.Category;
 import com.senac.model.PaymentMethod;
 import com.senac.view.home.LoadingDialog;
 import java.util.List;
