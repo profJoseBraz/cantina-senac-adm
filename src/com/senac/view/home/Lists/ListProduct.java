@@ -32,7 +32,7 @@ public class ListProduct extends javax.swing.JFrame {
             listAll(
                 (DefaultTableModel) tableProduct.getModel(), 
                 new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), 
-                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableProduct)));
+                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableProduct), "Por favor, aguarde..."));
 
             setComponentsInitialState();
 
@@ -227,11 +227,11 @@ public class ListProduct extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
        switch(jcbFilterType.getSelectedIndex()){
             case 0:
-                listAll((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), new LoadingDialog(this));
+                listAll((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
             case 3:
                 String name = jtfFilterCriteria.getText();
-                listByName((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductByName(new CertManager(), new HttpClient(), name), new LoadingDialog(this));
+                listByName((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductByName(new CertManager(), new HttpClient(), name), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
         }
     }//GEN-LAST:event_btnSearchActionPerformed

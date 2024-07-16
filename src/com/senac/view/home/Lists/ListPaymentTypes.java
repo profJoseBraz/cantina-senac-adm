@@ -31,7 +31,7 @@ public class ListPaymentTypes extends javax.swing.JFrame {
                 listAll(
             (DefaultTableModel) tablePaymentTypes.getModel(), 
             new PaymentMethodClient().getAllPaymentMethods(new CertManager(), new HttpClient()),
-            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tablePaymentTypes)));
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tablePaymentTypes), "Por favor, aguarde..."));
     
 //        setComponentsInitialState();
         
