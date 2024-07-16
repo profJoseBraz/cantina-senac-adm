@@ -4,7 +4,6 @@
  */
 package cantinasenacadm;
 
-import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.http.HttpGithubUploader;
 import java.io.IOException;
 import java.security.KeyManagementException;

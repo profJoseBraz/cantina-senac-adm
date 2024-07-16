@@ -4,16 +4,13 @@
  */
 package com.senac.helpers.http;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.senac.helpers.cert.CertManager;
+import com.senac.consumer.ConfigClient;
 import okhttp3.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -35,7 +32,7 @@ public class HttpGithubUploader {
     private static final String GITHUB_USERNAME = "banco-imgs";
     private static final String GITHUB_REPO = "bd-imagens";
     private static final String GITHUB_BRANCH = "main";
-    private static final String GITHUB_TOKEN = "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";
+    private static final String GITHUB_TOKEN = ConfigClient.token.get(0);
 
     public static void upload(String filePath, String gitHubPath) throws IOException, KeyManagementException, NoSuchAlgorithmException {
         // Configura o SSLContext para aceitar todos os certificados =========================================

@@ -4,21 +4,27 @@
  */
 package com.senac.view.home;
 
+import com.senac.consumer.ConfigClient;
+import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.formsRefs.Forms;
+import com.senac.helpers.http.HttpClient;
 import com.senac.helpers.layouts.CentralizePanel;
+import com.senac.model.Config;
 import com.senac.view.home.Lists.ListCategory;
 import com.senac.view.home.Lists.ListPaymentTypes;
 import com.senac.view.home.Lists.ListProduct;
 import com.senac.view.home.Lists.ListProduction;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author caetano.8918
  */
 public class Menu extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form Menu
      */
@@ -34,9 +40,29 @@ public class Menu extends javax.swing.JFrame {
 //        gbc.weighty = 1.0;
 //        gbc.fill = GridBagConstraints.CENTER;
         
+        getConfigs(
+            new ConfigClient().getDdImgsToken(new CertManager(), new HttpClient()), 
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)), ConfigClient.token);
+        
         CentralizePanel.centralize(jPanel1, jpButtons);
     }
 
+    public void getConfigs(CompletableFuture<List<Config>> futureConfig, LoadingDialog loadingDialog, List<String> resultToken){
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+        
+        futureConfig.thenAccept(configs -> {
+            for (Config token : configs) {
+                resultToken.add(token.getDbImgsToken());
+            }
+            
+            loadingDialog.dispose();
+        }).exceptionally(ex -> {
+            System.err.println("Erro ao listar categorias: " + ex.getMessage());
+            loadingDialog.dispose();
+            return null;
+        });
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
