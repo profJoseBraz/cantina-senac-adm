@@ -21,8 +21,8 @@ public class CantinaSenacAdm {
      */
     public static void main(String[] args) throws KeyManagementException, NoSuchAlgorithmException {
         try{
-            String file = "Novo(a) Documento de Texto.txt";
-            String filePath = "C:\\Users\\10156\\Desktop\\" + file;
+            String file = "amodown-logo.png";
+            String filePath = "C:\\Users\\grander.3993\\Documents\\ProjetoAmoDown\\amo-down-web\\src\\assets\\" + file;
             String gitHubPath = "src/img/produtos/bebidas/";
             
             HttpGithubUploader.upload(filePath, gitHubPath);

@@ -17,4 +17,6 @@ public class Constantes {
     
     public static File FilePath = null;
     public static String FileName = null;
+    
+    public static String SelectedCategory = null;
 }

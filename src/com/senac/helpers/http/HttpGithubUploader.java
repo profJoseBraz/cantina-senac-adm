@@ -35,7 +35,7 @@ public class HttpGithubUploader {
     private static final String GITHUB_USERNAME = "banco-imgs";
     private static final String GITHUB_REPO = "bd-imagens";
     private static final String GITHUB_BRANCH = "main";
-    private static final String GITHUB_TOKEN = "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";
+    private static final String GITHUB_TOKEN = "";
 
     public static void upload(String filePath, String gitHubPath) throws IOException, KeyManagementException, NoSuchAlgorithmException {
         // Configura o SSLContext para aceitar todos os certificados =========================================

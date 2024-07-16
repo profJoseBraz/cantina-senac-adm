@@ -43,16 +43,14 @@ public class FileChooser extends javax.swing.JFrame {
                 
                 BufferedImage imagem = ImageIO.read(Constantes.FilePath);
                 ImageIcon icon = new ImageIcon(imagem);
+                
                 Constantes.SelectedFileIMG = icon;
                 Constantes.FilePath = selectedFile;
+                Constantes.FileName = selectedFile.getName();
+                
+                ((CadProduct) Forms.CadProduct).UpdateFilePath();
                 
                 this.dispose();
-                
-                if(Forms.CadProduct == null)
-                    Forms.CadProduct = new CadProduct();
-                    
-                Forms.CadProduct.setVisible(true);
-                
                 
             } catch (IOException ex) {
                 Logger.getLogger(FileChooser.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,7 +72,10 @@ public class FileChooser extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        checkbox1 = new java.awt.Checkbox();
         jFileChooser = new javax.swing.JFileChooser();
+
+        checkbox1.setLabel("checkbox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -138,6 +139,7 @@ public class FileChooser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Checkbox checkbox1;
     private javax.swing.JFileChooser jFileChooser;
     // End of variables declaration//GEN-END:variables
 }

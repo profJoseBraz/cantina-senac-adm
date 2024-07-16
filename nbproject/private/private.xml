@@ -3,17 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-
+            <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/cantinasenacadm/CantinaSenacAdm.java</file>
             <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/helpers/http/HttpGithubUploader.java</file>
-            <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/consumer/CategoryClient.java</file>
-            <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/consumer/ProductsClient.java</file>
-            <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/helpers/http/HttpClient.java</file>
-            <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/consumer/PaymentMethodClient.java</file>
+            <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/view/home/Menu.java</file>
             <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/view/home/FileChooser.java</file>
-            <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/helpers/formsRefs/Forms.java</file>
-            <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/view/home/cadaster/CadCategory.java</file>
             <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/view/home/cadaster/CadProduct.java</file>
-
+            <file>file:/C:/Users/grander.3993/Documents/ProjetoCantina%20-%20SENAC/cantina-senac-adm/src/com/senac/helpers/global/Constantes.java</file>
         </group>
     </open-files>
 </project-private>

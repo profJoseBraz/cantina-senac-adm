@@ -10,13 +10,18 @@ import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.formsRefs.Forms;
 import com.senac.helpers.global.Constantes;
 import com.senac.helpers.http.HttpClient;
+import com.senac.helpers.http.HttpGithubUploader;
 import com.senac.view.home.FileChooser;
 import com.senac.view.home.LoadingDialog;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.Normalizer;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.spi.DirectoryManager;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -36,6 +41,13 @@ public class CadProduct extends javax.swing.JFrame {
         initComponents();
         
         labelImageRender.setIcon(Constantes.SelectedFileIMG);
+        jtfFilePath.setText("../../../src/img/produtos/" + Constantes.SelectedCategory + "/" + Constantes.FileName);
+    }
+    
+    public void UpdateFilePath (){
+        System.out.println("asdasdsad");
+        labelImageRender.setIcon(Constantes.SelectedFileIMG);
+        jtfFilePath.setText("../../../src/img/produtos/" + Constantes.SelectedCategory + "/" + Constantes.FileName);
     }
     
     public void post(CompletableFuture<Boolean> futureCategory, LoadingDialog loadingDialog, String successMessage, String errorMessage){
@@ -139,6 +151,11 @@ public class CadProduct extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(298, 50));
 
         jcbCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione uma categoria", "Bebidas", "Marmita", "Salgado", "Sobremesas" }));
+        jcbCategory.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbCategoryItemStateChanged(evt);
+            }
+        });
         jcbCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbCategoryActionPerformed(evt);
@@ -309,7 +326,7 @@ public class CadProduct extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(87, 87, 87)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,6 +344,8 @@ public class CadProduct extends javax.swing.JFrame {
         jPanel10.setForeground(new java.awt.Color(255, 255, 255));
 
         jtfFilePath.setBackground(new java.awt.Color(51, 51, 51));
+        jtfFilePath.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jtfFilePath.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -352,7 +371,7 @@ public class CadProduct extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelImageRender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelImageRender, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -362,7 +381,7 @@ public class CadProduct extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelImageRender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelImageRender, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -410,7 +429,7 @@ public class CadProduct extends javax.swing.JFrame {
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
         jPanel3Layout.setVerticalGroup(
@@ -428,13 +447,13 @@ public class CadProduct extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
                         .addContainerGap())))
         );
 
@@ -480,11 +499,11 @@ public class CadProduct extends javax.swing.JFrame {
                     "name": "%s",
                     "description": "%s",
                     "value": "%s",
-                    "image": ""
+                    "image": "%s"
                 }
             """;
         
-        body = String.format(body, jcbCategory.getSelectedIndex(), jtfName.getText(), jtfDesc.getText(), jtfPrice.getText()); 
+        body = String.format(body, jcbCategory.getSelectedIndex(), jtfName.getText(), jtfDesc.getText(), jtfPrice.getText(), jtfFilePath.getText()); 
         
         post(
             new ProductsClient().postProduct(
@@ -494,24 +513,48 @@ public class CadProduct extends javax.swing.JFrame {
             new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)),
             "Produto salvo com sucesso.",
             "Erro ao salvar o produto.");
+        
+            try{
+                String file = Constantes.FileName;
+               // String filePath = "C:\\Users\\grander.3993\\Documents\\ProjetoAmoDown\\amo-down-web\\src\\assets\\" + file;
+                String filePath = String.valueOf(Constantes.FilePath);
+                String gitHubPath = "src/img/produtos/bebidas/";
+
+                HttpGithubUploader.upload(filePath, gitHubPath);
+            }
+            catch(IOException e){
+                System.err.println(e.getMessage());
+            }
+            catch (KeyManagementException ex) {
+            Logger.getLogger(CadProduct.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(CadProduct.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        Forms.CadProduct = new CadProduct();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
-        this.dispose();
         
         if(Forms.FileChooser == null)
             Forms.FileChooser =  new FileChooser();
         
-        Forms.FileChooser.setVisible(true);
+//        Forms.FileChooser.setVisible(true);
     }//GEN-LAST:event_jButton5MouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         Forms.CadProduct = null;
     }//GEN-LAST:event_formWindowClosed
+
+    private void jcbCategoryItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbCategoryItemStateChanged
+        Constantes.SelectedCategory = jcbCategory.getItemAt(jcbCategory.getSelectedIndex()).toString();
+        UpdateFilePath();
+    }//GEN-LAST:event_jcbCategoryItemStateChanged
 
     /**
      * @param args the command line arguments
