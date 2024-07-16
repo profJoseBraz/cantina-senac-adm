@@ -57,7 +57,7 @@ public class Menu extends javax.swing.JFrame {
             
             loadingDialog.dispose();
         }).exceptionally(ex -> {
-            System.err.println("Erro ao listar categorias: " + ex.getMessage());
+            System.err.println("Erro ao obter o token do banco de dados de imagens: " + ex.getMessage());
             loadingDialog.dispose();
             return null;
         });
