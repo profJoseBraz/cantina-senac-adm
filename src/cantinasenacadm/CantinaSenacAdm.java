@@ -4,10 +4,10 @@
  */
 package cantinasenacadm;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.senac.helpers.http.HttpClient;
-import com.senac.model.Category;
+import com.senac.helpers.http.HttpGithubUploader;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  *
@@ -18,22 +18,15 @@ public class CantinaSenacAdm {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        HttpClient httpClient = new HttpClient();
-        
-        String body = """
-                        {
-                            "name": "%s"
-                        }
-                       """;
-        
-        String valor = "aasdfsadfadsfadsf";
-        
-        body = String.format(body, valor);
-        
-        System.err.println(body);
-        
-        httpClient.makePostRequest("http://localhost:8080/category/add", body);
+    public static void main(String[] args) throws KeyManagementException, NoSuchAlgorithmException {
+        try{
+            String file = "Novo(a) Documento de Texto.txt";
+            String filePath = "C:\\Users\\10156\\Desktop\\" + file;
+            String gitHubPath = "src/img/produtos/bebidas/";
+            
+            HttpGithubUploader.upload(filePath, gitHubPath);
+        }catch(IOException e){
+            System.err.println(e.getMessage());
+        }
     }
-    
 }
