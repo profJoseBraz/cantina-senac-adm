@@ -32,10 +32,10 @@ public class ProductionClient {
         });
     }
          
-          public CompletableFuture<List<Production>> getProductionByCategory(CertManager certManager, HttpClient httpClient, String category){
+    public CompletableFuture<List<Production>> getProductionByCategory(CertManager certManager, HttpClient httpClient, String category){
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
-            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production/category", "name=" + category);
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production/products/category", "name=" + category);
 
             Gson gson = new Gson();
             List<Production> production = gson.fromJson(res.toString(), new TypeToken<List<Production>>(){}.getType());
@@ -43,6 +43,20 @@ public class ProductionClient {
             return production;
         }).exceptionally(ex -> {
             System.err.println("Método: getProductByCategory" + ex.getMessage());
+            return null;
+        });
+    }
+    public CompletableFuture<List<Production>> getProductionByNameProd(CertManager certManager, HttpClient httpClient, String nameProd){
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production/products", "name=" + nameProd);
+
+            Gson gson = new Gson();
+            List<Production> production = gson.fromJson(res.toString(), new TypeToken<List<Production>>(){}.getType());
+
+            return production;
+        }).exceptionally(ex -> {
+            System.err.println("Método: getProductByNameProd" + ex.getMessage());
             return null;
         });
     }

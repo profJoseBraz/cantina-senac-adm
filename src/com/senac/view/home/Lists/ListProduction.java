@@ -81,7 +81,25 @@ public class ListProduction extends javax.swing.JFrame {
             });
             }
     
+            public void listByNameProd(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
 
+            futureProducts.thenAccept(productions -> {
+                tableModel.setRowCount(0);
+
+                for (Production production : productions) {
+                    tableModel.addRow(new Object[]{production.getId(), production.getDate(), production.getAmount(), production.getObservation(),
+                    production.getProduct().getId() ,production.getProduct().getCategory().getName(), production.getProduct().getName(),
+                    production.getProduct().getDescription(), production.getProduct().getValue()});                
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar produção: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+            }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -215,10 +233,15 @@ public class ListProduction extends javax.swing.JFrame {
             case 0:
                 listAllProduction((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), new LoadingDialog(this));
                 break;
+            case 3:
+                String nameProd = jtfFilterCriteria.getText();
+                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByNameProd(new CertManager(), new HttpClient(), nameProd), new LoadingDialog(this));
+                break;
             case 4:
                 String category = jtfFilterCriteria.getText();
                 listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByCategory(new CertManager(), new HttpClient(), category), new LoadingDialog(this));
                 break;
+            
         }
             }//GEN-LAST:event_btnSearchActionPerformed
 

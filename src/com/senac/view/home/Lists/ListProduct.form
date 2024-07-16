@@ -99,15 +99,13 @@
         <Component class="javax.swing.JComboBox" name="jcbFilterType">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="8">
+              <StringArray count="6">
                 <StringItem index="0" value="TODOS"/>
                 <StringItem index="1" value="ID"/>
                 <StringItem index="2" value="CATEGORIA"/>
                 <StringItem index="3" value="NOME"/>
-                <StringItem index="4" value="DESCRI&#xc7;&#xc3;O"/>
-                <StringItem index="5" value="VALOR MAIOR QUE"/>
-                <StringItem index="6" value="VALOR MENOR QUE"/>
-                <StringItem index="7" value=" "/>
+                <StringItem index="4" value=" "/>
+                <StringItem index="5" value=" "/>
               </StringArray>
             </Property>
           </Properties>

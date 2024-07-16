@@ -131,7 +131,7 @@ public class ListProduct extends javax.swing.JFrame {
             }
         });
 
-        jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "CATEGORIA", "NOME", "DESCRIÇÃO", "VALOR MAIOR QUE", "VALOR MENOR QUE", " " }));
+        jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "CATEGORIA", "NOME", " ", " " }));
         jcbFilterType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jcbFilterTypeItemStateChanged(evt);
