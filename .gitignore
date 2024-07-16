@@ -1,1 +1,40 @@
+# Arquivos de build
+build/
+nbbuild/
+dist/
+nbdist/
+nbanalysis/
 nbproject/private/
+build.xml
+nb-configuration.xml
+
+# Arquivos gerados automaticamente
+*.class
+*.war
+*.ear
+*.log
+
+# Arquivos de configuração da IDE
+*.iml
+.idea/
+*.iws
+*.ipr
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Outros arquivos e diretórios temporários
+*.tmp
+*.bak
+*.swp
+
+# Logs
+*.log
+
+# Configurações locais do Maven e Gradle
+.mvn/
+.gradle/
+
+# Outros arquivos de configuração local
+.vscode/
