@@ -4,6 +4,17 @@
  */
 package com.senac.view.home.Lists;
 
+import com.senac.consumer.OrderClient;
+import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.http.HttpClient;
+import com.senac.model.Order;
+import com.senac.view.home.LoadingDialog;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author 10156
@@ -15,8 +26,37 @@ public class ListOrder extends javax.swing.JFrame {
      */
     public ListOrder() {
         initComponents();
-        setExtendedState(MAXIMIZED_BOTH);
-    }
+        setLocationRelativeTo(null);
+            listAll(
+                (DefaultTableModel) tableOrder.getModel(), 
+                new OrderClient().getAllOrder(new CertManager(), new HttpClient()), 
+                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableOrder)));
+
+            setComponentsInitialState();
+        }
+
+        private void setComponentsInitialState(){
+            jtfFilterCriteria.setEnabled(false);
+        }
+
+        public void listAll(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureOrders.thenAccept(orders -> {
+                tableModel.setRowCount(0);
+
+                for (Order order : orders ) {                    
+                    tableModel.addRow(new Object[]{order.getId(), order.getPaymentMethod().getName(), order.getCustomerName(), order.getDate(),order.getTime()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Order: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -95,6 +135,13 @@ public class ListOrder extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tableOrder);
+        if (tableOrder.getColumnModel().getColumnCount() > 0) {
+            tableOrder.getColumnModel().getColumn(0).setMaxWidth(50);
+            tableOrder.getColumnModel().getColumn(1).setMaxWidth(350);
+            tableOrder.getColumnModel().getColumn(2).setMaxWidth(450);
+            tableOrder.getColumnModel().getColumn(3).setMaxWidth(350);
+            tableOrder.getColumnModel().getColumn(4).setMaxWidth(350);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

@@ -4,14 +4,14 @@
  */
 package com.senac.view.home.Lists;
 
-import com.senac.consumer.CategoryClient;
 import com.senac.consumer.ProductsClient;
 import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.formatters.MyCurrencyFormatter;
 import com.senac.helpers.http.HttpClient;
-import com.senac.model.Category;
 import com.senac.model.Product;
 import com.senac.view.home.LoadingDialog;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -50,7 +50,9 @@ public class ListProduct extends javax.swing.JFrame {
                 tableModel.setRowCount(0);
 
                 for (Product product : products ) {
-                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), product.getValue()});
+                    String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
+                    
+                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), formattedValue});
                 }
 
                 loadingDialog.dispose();
@@ -68,7 +70,9 @@ public class ListProduct extends javax.swing.JFrame {
                 tableModel.setRowCount(0);
 
                 for (Product product : products) {
-                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), product.getValue()});
+                    String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
+                    
+                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), formattedValue});
                 }
 
                 loadingDialog.dispose();
@@ -80,14 +84,16 @@ public class ListProduct extends javax.swing.JFrame {
         }
         
         
-        public void listByCategory(DefaultTableModel TableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
+        public void listByCategory(DefaultTableModel tableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
             SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
 
             futureProducts.thenAccept(products -> {
-                TableModel.setRowCount(0);
+                tableModel.setRowCount(0);
 
                 for (Product product : products) {
-                    TableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), product.getValue()});
+                    String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
+                    
+                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), formattedValue});
                 }
 
                 loadingDialog.dispose();
@@ -177,6 +183,13 @@ public class ListProduct extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tableProduct);
+        if (tableProduct.getColumnModel().getColumnCount() > 0) {
+            tableProduct.getColumnModel().getColumn(0).setMaxWidth(50);
+            tableProduct.getColumnModel().getColumn(1).setMaxWidth(200);
+            tableProduct.getColumnModel().getColumn(2).setMaxWidth(300);
+            tableProduct.getColumnModel().getColumn(3).setMaxWidth(700);
+            tableProduct.getColumnModel().getColumn(4).setMaxWidth(60);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

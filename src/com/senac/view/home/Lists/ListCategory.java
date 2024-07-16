@@ -127,6 +127,9 @@ public class ListCategory extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tableCategory);
+        if (tableCategory.getColumnModel().getColumnCount() > 0) {
+            tableCategory.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
