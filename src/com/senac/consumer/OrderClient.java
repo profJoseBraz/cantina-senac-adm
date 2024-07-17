@@ -31,4 +31,18 @@ public class OrderClient {
             return null; // Handle error gracefully
         });
     } 
+                  public CompletableFuture<List<Order>> getCostumerNameOrder(CertManager certManager, HttpClient httpClient) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/orders", "");
+
+            Gson gson = new Gson();
+            List<Order> Order = gson.fromJson(res.toString(), new TypeToken<List<Order>>() {}.getType());
+
+            return Order;
+        }).exceptionally(ex -> {
+            System.err.println("Error in Order method: " + ex.getMessage());
+            return null; // Handle error gracefully
+        });
+    } 
 }

@@ -46,7 +46,12 @@ public class ListOrder extends javax.swing.JFrame {
                 tableModel.setRowCount(0);
 
                 for (Order order : orders ) {                    
-                    tableModel.addRow(new Object[]{order.getId(), order.getPaymentMethod().getName(), order.getCustomerName(), order.getDate(),order.getTime()});
+                    tableModel.addRow(new Object[]{
+                        order.getId(), 
+                        order.getPaymentMethod().getName(), 
+                        order.getCustomerName(), 
+                        order.getDate(),
+                        order.getTime()});
                 }
 
                 loadingDialog.dispose();
@@ -55,7 +60,29 @@ public class ListOrder extends javax.swing.JFrame {
                 loadingDialog.dispose();
                 return null;
             });
-        }    
+        }
+                public void listByCostumerName(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureOrders.thenAccept(orders -> {
+                tableModel.setRowCount(0);
+
+                for (Order order : orders ) {                    
+                    tableModel.addRow(new Object[]{
+                        order.getId(), 
+                        order.getPaymentMethod().getName(), 
+                        order.getCustomerName(), 
+                        order.getDate(),
+                        order.getTime()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Order: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        } 
     
 
     /**
