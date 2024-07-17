@@ -46,7 +46,9 @@ public class ListPaymentTypes extends javax.swing.JFrame {
             tableModel.setRowCount(0);
         
             for (PaymentMethod paymentMethod : Payments) {
-                tableModel.addRow(new Object[]{paymentMethod.getId(), paymentMethod.getName()});
+                tableModel.addRow(new Object[]{
+                    paymentMethod.getId(),
+                    paymentMethod.getName()});
             }
             
             loadingDialog.dispose();
