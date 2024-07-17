@@ -23,4 +23,21 @@ public class PaymentMethodClient {
             return null; // Handle error gracefully
         });
     }
+    
+    public CompletableFuture<Boolean> postPaymentMethods(CertManager certManager, HttpClient httpClient, String body){
+        CompletableFuture<Boolean> resultFuture = new CompletableFuture<>();
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                certManager.trustAllCerts();
+                boolean res = httpClient.makePostRequest(HttpClient.API_URL + "/paymentMethod/add", body);
+                resultFuture.complete(res);
+            } catch (Exception ex) {
+                System.err.println("Classe: PaymentMethodClient | Método: postPaymentMethod: " + ex.getMessage());
+                resultFuture.completeExceptionally(ex);
+            }
+        });
+
+        return resultFuture;
+    }
 }

@@ -47,6 +47,24 @@ public class ProductsClient {
         });
     }
       
+    public CompletableFuture<Boolean> postProduct(CertManager certManager, HttpClient httpClient, String body){
+        CompletableFuture<Boolean> resultFuture = new CompletableFuture<>();
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                certManager.trustAllCerts();
+                boolean res = httpClient.makePostRequest(HttpClient.API_URL + "/products/add", body);
+                resultFuture.complete(res);
+            } catch (Exception ex) {
+                System.err.println("Classe: ProductsClient | Método: postProducts: " + ex.getMessage());
+                resultFuture.completeExceptionally(ex);
+            }
+        });
+
+        return resultFuture;
+        }
+
+
       public CompletableFuture<List<Product>> getProductByCategory(CertManager certManager, HttpClient httpClient, String category){
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
@@ -60,5 +78,6 @@ public class ProductsClient {
             System.err.println("Método: getProductByCategory" + ex.getMessage());
             return null;
         });
+
     }
 }

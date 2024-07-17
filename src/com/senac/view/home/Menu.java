@@ -15,6 +15,7 @@ import com.senac.view.home.Lists.ListOrder;
 import com.senac.view.home.Lists.ListPaymentTypes;
 import com.senac.view.home.Lists.ListProduct;
 import com.senac.view.home.Lists.ListProduction;
+import com.senac.view.home.cadaster.CadProduct;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import javax.swing.JFrame;
@@ -80,7 +81,7 @@ public class Menu extends javax.swing.JFrame {
         btnVerPedidos = new javax.swing.JButton();
         btnVisuOrder = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jmenuItemCad = new javax.swing.JMenu();
         miCadProd = new javax.swing.JMenuItem();
         miCadCategoria = new javax.swing.JMenuItem();
         miCadProducao = new javax.swing.JMenuItem();
@@ -164,7 +165,12 @@ public class Menu extends javax.swing.JFrame {
                 .addContainerGap(386, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("Cadastro");
+        jmenuItemCad.setText("Cadastro");
+        jmenuItemCad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // jmenuItemCadMouseClicked(evt);
+            }
+        });
 
         miCadProd.setText("Cadastrar Produto");
         miCadProd.addActionListener(new java.awt.event.ActionListener() {
@@ -172,7 +178,7 @@ public class Menu extends javax.swing.JFrame {
                 miCadProdActionPerformed(evt);
             }
         });
-        jMenu1.add(miCadProd);
+        jmenuItemCad.add(miCadProd);
 
         miCadCategoria.setText("Cadastrar Categoria");
         miCadCategoria.addActionListener(new java.awt.event.ActionListener() {
@@ -180,7 +186,7 @@ public class Menu extends javax.swing.JFrame {
                 miCadCategoriaActionPerformed(evt);
             }
         });
-        jMenu1.add(miCadCategoria);
+        jmenuItemCad.add(miCadCategoria);
 
         miCadProducao.setText("Cadastrar Produção");
         miCadProducao.addActionListener(new java.awt.event.ActionListener() {
@@ -188,7 +194,7 @@ public class Menu extends javax.swing.JFrame {
                 miCadProducaoActionPerformed(evt);
             }
         });
-        jMenu1.add(miCadProducao);
+        jmenuItemCad.add(miCadProducao);
 
         miCadRestricao.setText("Cadastrar Restrição");
         miCadRestricao.addActionListener(new java.awt.event.ActionListener() {
@@ -196,7 +202,7 @@ public class Menu extends javax.swing.JFrame {
                 miCadRestricaoActionPerformed(evt);
             }
         });
-        jMenu1.add(miCadRestricao);
+        jmenuItemCad.add(miCadRestricao);
 
         miFazerPedido.setText("Fazer Pedido");
         miFazerPedido.addActionListener(new java.awt.event.ActionListener() {
@@ -204,7 +210,7 @@ public class Menu extends javax.swing.JFrame {
                 miFazerPedidoActionPerformed(evt);
             }
         });
-        jMenu1.add(miFazerPedido);
+        jmenuItemCad.add(miFazerPedido);
 
         miCadFormPagamento.setText("Formas Pagamentos");
         miCadFormPagamento.addActionListener(new java.awt.event.ActionListener() {
@@ -212,9 +218,9 @@ public class Menu extends javax.swing.JFrame {
                 miCadFormPagamentoActionPerformed(evt);
             }
         });
-        jMenu1.add(miCadFormPagamento);
+        jmenuItemCad.add(miCadFormPagamento);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jmenuItemCad);
 
         jMenu2.setText("Visualizar");
 
@@ -297,8 +303,8 @@ public class Menu extends javax.swing.JFrame {
         Forms.ListProduct.setVisible(true);    }//GEN-LAST:event_btnVerPedidosActionPerformed
 
     private void miCadProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCadProdActionPerformed
-        if (Forms.CadProduct == null)
-//            Forms.CadProduct = new CadProduct();
+       if(Forms.CadProduct == null)
+            Forms.CadProduct = new CadProduct();
         
         Forms.CadProduct.setVisible(true);
     }//GEN-LAST:event_miCadProdActionPerformed
@@ -439,6 +445,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenu jmenuItemCad;
     private javax.swing.JPanel jpButtons;
     private javax.swing.JMenuItem miCadCategoria;
     private javax.swing.JMenuItem miCadFormPagamento;

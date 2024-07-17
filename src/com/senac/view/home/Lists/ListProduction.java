@@ -265,7 +265,7 @@ public class ListProduction extends javax.swing.JFrame {
                 break;
             case 3:
                 String nameProd = jtfFilterCriteria.getText();
-                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByNameProd(new CertManager(), new HttpClient(), nameProd), new LoadingDialog(this, "Por favor, aguarde..."));
+                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByName(new CertManager(), new HttpClient(), nameProd), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
             case 4:
                 String category = jtfFilterCriteria.getText();

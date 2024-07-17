@@ -38,10 +38,12 @@ public class Forms {
     //Restriçoes
     public static JFrame CadRestricao;
     public static JFrame ListRestricao;
-    
-    
 
     //Tela de Menu
     public static JFrame TelaMenu;
+
+
+    //Tela para selecionar os arquivos
+    public static JFrame FileChooser;
 
 }

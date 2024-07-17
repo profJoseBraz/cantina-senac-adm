@@ -14,10 +14,11 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  *
- * @author caetano.8918
+ * @author grander.3993
  */
 public class ProductionClient {
-         public CompletableFuture<List<Production>> getAllProduction(CertManager certManager, HttpClient httpClient) {
+    
+     public CompletableFuture<List<Production>> getAllProduction(CertManager certManager, HttpClient httpClient) {
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
             StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production", "");
@@ -31,7 +32,7 @@ public class ProductionClient {
             return null; // Handle error gracefully
         });
     }
-         
+     
     public CompletableFuture<List<Production>> getProductionByCategory(CertManager certManager, HttpClient httpClient, String category){
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
@@ -46,17 +47,18 @@ public class ProductionClient {
             return null;
         });
     }
-    public CompletableFuture<List<Production>> getProductionByNameProd(CertManager certManager, HttpClient httpClient, String nameProd){
+     
+    public CompletableFuture<List<Production>> getProductionByName(CertManager certManager, HttpClient httpClient, String name){
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
-            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production/products", "name=" + nameProd);
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production/products", "name=" + name);
 
             Gson gson = new Gson();
             List<Production> production = gson.fromJson(res.toString(), new TypeToken<List<Production>>(){}.getType());
 
             return production;
         }).exceptionally(ex -> {
-            System.err.println("Método: getProductByNameProd" + ex.getMessage());
+            System.err.println("Método: getProductByName" + ex.getMessage());
             return null;
         });
     }

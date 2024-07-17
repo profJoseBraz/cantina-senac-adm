@@ -20,6 +20,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class HttpClient {
     public static final String API_URL = "https://cantina-senac-api-prod.up.railway.app";
     
+
     private boolean isLoading;
     
     public boolean isLoading(){
