@@ -96,14 +96,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miVisuCategoriaActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="miVisuRestricao">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Restri&#xe7;&#xf5;es"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miVisuRestricaoActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miVisuProducao">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Produ&#xe7;&#xe3;o"/>

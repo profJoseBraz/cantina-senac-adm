@@ -92,7 +92,6 @@ public class Menu extends javax.swing.JFrame {
         miVisuPedido = new javax.swing.JMenuItem();
         miVisuPedidos = new javax.swing.JMenuItem();
         miVisuCategoria = new javax.swing.JMenuItem();
-        miVisuRestricao = new javax.swing.JMenuItem();
         miVisuProducao = new javax.swing.JMenuItem();
         miListFormPagamento = new javax.swing.JMenuItem();
 
@@ -168,7 +167,7 @@ public class Menu extends javax.swing.JFrame {
         jmenuItemCad.setText("Cadastro");
         jmenuItemCad.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                // jmenuItemCadMouseClicked(evt);
+                //jmenuItemCadMouseClicked(evt);
             }
         });
 
@@ -247,14 +246,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jMenu2.add(miVisuCategoria);
-
-        miVisuRestricao.setText("Restrições");
-        miVisuRestricao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miVisuRestricaoActionPerformed(evt);
-            }
-        });
-        jMenu2.add(miVisuRestricao);
 
         miVisuProducao.setText("Produção");
         miVisuProducao.addActionListener(new java.awt.event.ActionListener() {
@@ -365,13 +356,6 @@ public class Menu extends javax.swing.JFrame {
         Forms.ListCategory.setVisible(true);
     }//GEN-LAST:event_miVisuCategoriaActionPerformed
 
-    private void miVisuRestricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVisuRestricaoActionPerformed
-        if (Forms.ListRestricao == null)
-//            Forms.ListRestricao = new ListRestricao();
-        
-        Forms.ListRestricao.setVisible(true);
-    }//GEN-LAST:event_miVisuRestricaoActionPerformed
-
     private void miVisuProducaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVisuProducaoActionPerformed
         if (Forms.listProduction == null)
             Forms.listProduction = new ListProduction();
@@ -441,7 +425,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnAddPedidos;
     private javax.swing.JButton btnVerPedidos;
     private javax.swing.JButton btnVisuOrder;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem6;
@@ -459,6 +442,5 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem miVisuPedido;
     private javax.swing.JMenuItem miVisuPedidos;
     private javax.swing.JMenuItem miVisuProducao;
-    private javax.swing.JMenuItem miVisuRestricao;
     // End of variables declaration//GEN-END:variables
 }

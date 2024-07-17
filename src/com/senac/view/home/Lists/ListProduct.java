@@ -52,7 +52,12 @@ public class ListProduct extends javax.swing.JFrame {
                 for (Product product : products ) {
                     String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
                     
-                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), formattedValue});
+                    tableModel.addRow(new Object[]{
+                        product.getId(),
+                        product.getName(),
+                        product.getCategory().getName(),
+                        product.getDescription(),
+                        formattedValue});
                 }
 
                 loadingDialog.dispose();
@@ -72,7 +77,12 @@ public class ListProduct extends javax.swing.JFrame {
                 for (Product product : products) {
                     String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
                     
-                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), formattedValue});
+                    tableModel.addRow(new Object[]{
+                        product.getId(),
+                        product.getName(),
+                        product.getCategory().getName(),
+                        product.getDescription(),
+                        formattedValue});
                 }
 
                 loadingDialog.dispose();
@@ -93,7 +103,12 @@ public class ListProduct extends javax.swing.JFrame {
                 for (Product product : products) {
                     String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
                     
-                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), formattedValue});
+                    tableModel.addRow(new Object[]{
+                        product.getId(),
+                        product.getName(),
+                        product.getCategory().getName(),
+                        product.getDescription(),
+                        formattedValue});
                 }
 
                 loadingDialog.dispose();
@@ -179,14 +194,16 @@ public class ListProduct extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Categoria", "Nome", "Descrição", "Valor"
+                "Id", "Nome", "Categoria", "Descrição", "Valor"
             }
         ));
         jScrollPane1.setViewportView(tableProduct);
         if (tableProduct.getColumnModel().getColumnCount() > 0) {
-            tableProduct.getColumnModel().getColumn(0).setMaxWidth(50);
-            tableProduct.getColumnModel().getColumn(1).setMaxWidth(200);
-            tableProduct.getColumnModel().getColumn(2).setMaxWidth(300);
+            tableProduct.getColumnModel().getColumn(0).setMinWidth(0);
+            tableProduct.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tableProduct.getColumnModel().getColumn(0).setMaxWidth(0);
+            tableProduct.getColumnModel().getColumn(1).setMaxWidth(300);
+            tableProduct.getColumnModel().getColumn(2).setMaxWidth(200);
             tableProduct.getColumnModel().getColumn(3).setMaxWidth(700);
             tableProduct.getColumnModel().getColumn(4).setMaxWidth(60);
         }

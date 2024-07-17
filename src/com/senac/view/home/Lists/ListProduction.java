@@ -5,25 +5,18 @@
 package com.senac.view.home.Lists;
 
 import com.senac.consumer.ProductionClient;
-import com.senac.consumer.ProductsClient;
 import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.formatters.MyCurrencyFormatter;
 import com.senac.helpers.formatters.MyDateFormatter;
 import com.senac.helpers.http.HttpClient;
 import com.senac.model.Production;
 import com.senac.view.home.LoadingDialog;
-import java.text.Format;
-import java.text.NumberFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.DateFormatter;
 
 /**
  *
@@ -36,7 +29,6 @@ public class ListProduction extends javax.swing.JFrame {
      */
     public ListProduction() {
         initComponents();
-        setExtendedState(MAXIMIZED_BOTH);
         listAllProduction(
                 (DefaultTableModel) tableProduction.getModel(), 
                 new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), 
@@ -61,9 +53,16 @@ public class ListProduction extends javax.swing.JFrame {
                     String formatteDate = MyDateFormatter.format(production.getDate(), "yyyy-MM-dd'T'HH:mm:ss.SSSX", "dd/MM/yyyy");
                     String formattedValue = MyCurrencyFormatter.format(production.getProduct().getValue(), new Locale("pt", "BR"));
                     
-                    tableModel.addRow(new Object[]{production.getId(), formatteDate, production.getAmount(), production.getObservation(),
-                    production.getProduct().getId() ,production.getProduct().getCategory().getName(), production.getProduct().getName(),
-                    production.getProduct().getDescription(), formattedValue});
+                    tableModel.addRow(new Object[]{
+                        production.getId(),
+                        production.getProduct().getId(),
+                        production.getProduct().getName(),
+                        production.getProduct().getCategory().getName(),
+                        production.getProduct().getDescription(),
+                        production.getObservation(),
+                        formattedValue,
+                        production.getAmount(),
+                        formatteDate});
                 }
 
                 loadingDialog.dispose();
@@ -84,9 +83,16 @@ public class ListProduction extends javax.swing.JFrame {
                     String formatteDate = MyDateFormatter.format(production.getDate(), "yyyy-MM-dd'T'HH:mm:ss.SSSX", "dd/MM/yyyy");
                     String formattedValue = MyCurrencyFormatter.format(production.getProduct().getValue(), new Locale("pt", "BR"));
                     
-                    tableModel.addRow(new Object[]{production.getId(), formatteDate, production.getAmount(), production.getObservation(),
-                    production.getProduct().getId() ,production.getProduct().getCategory().getName(), production.getProduct().getName(),
-                    production.getProduct().getDescription(), formattedValue});                
+                    tableModel.addRow(new Object[]{
+                        production.getId(),
+                        production.getProduct().getId(),
+                        production.getProduct().getName(),
+                        production.getProduct().getCategory().getName(),
+                        production.getProduct().getDescription(),
+                        production.getObservation(),
+                        formattedValue,
+                        production.getAmount(),
+                        formatteDate});               
                 }
 
                 loadingDialog.dispose();
@@ -107,9 +113,16 @@ public class ListProduction extends javax.swing.JFrame {
                     String formatteDate = MyDateFormatter.format(production.getDate(), "yyyy-MM-dd'T'HH:mm:ss.SSSX", "dd/MM/yyyy");
                     String formattedValue = MyCurrencyFormatter.format(production.getProduct().getValue(), new Locale("pt", "BR"));
                     
-                    tableModel.addRow(new Object[]{production.getId(), formatteDate, production.getAmount(), production.getObservation(),
-                    production.getProduct().getId() ,production.getProduct().getCategory().getName(), production.getProduct().getName(),
-                    production.getProduct().getDescription(), formattedValue});                
+                    tableModel.addRow(new Object[]{
+                        production.getId(),
+                        production.getProduct().getId(),
+                        production.getProduct().getName(),
+                        production.getProduct().getCategory().getName(),
+                        production.getProduct().getDescription(),
+                        production.getObservation(),
+                        formattedValue,
+                        production.getAmount(),
+                        formatteDate});                
                 }
 
                 loadingDialog.dispose();
@@ -189,11 +202,11 @@ public class ListProduction extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Data", "Quantidade", "Observação", "Id do Produto", "Categoria", "Nome do produto", "Descrição do produto", "Valor do Produto"
+                "Id", "Id do Produto", "Nome do produto", "Categoria", "Descrição do produto", "Observação", "Valor do Produto", "Quantidade", "Data"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true, true
+                false, false, false, false, true, false, true, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -202,15 +215,13 @@ public class ListProduction extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableProduction);
         if (tableProduction.getColumnModel().getColumnCount() > 0) {
-            tableProduction.getColumnModel().getColumn(0).setMaxWidth(50);
-            tableProduction.getColumnModel().getColumn(1).setMaxWidth(250);
-            tableProduction.getColumnModel().getColumn(2).setMaxWidth(100);
-            tableProduction.getColumnModel().getColumn(3).setMaxWidth(650);
-            tableProduction.getColumnModel().getColumn(4).setMaxWidth(200);
-            tableProduction.getColumnModel().getColumn(5).setMaxWidth(200);
-            tableProduction.getColumnModel().getColumn(6).setMaxWidth(250);
-            tableProduction.getColumnModel().getColumn(7).setMaxWidth(800);
-            tableProduction.getColumnModel().getColumn(8).setMaxWidth(60);
+            tableProduction.getColumnModel().getColumn(0).setMinWidth(0);
+            tableProduction.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tableProduction.getColumnModel().getColumn(0).setMaxWidth(0);
+            tableProduction.getColumnModel().getColumn(1).setMinWidth(0);
+            tableProduction.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tableProduction.getColumnModel().getColumn(1).setMaxWidth(0);
+            tableProduction.getColumnModel().getColumn(7).setMaxWidth(100);
         }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
