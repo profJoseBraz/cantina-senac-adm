@@ -16,6 +16,7 @@ public class ListOrdersItems extends javax.swing.JFrame {
     public ListOrdersItems() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
+        
     }
 
     /**
@@ -90,6 +91,19 @@ public class ListOrdersItems extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tableOrderItems);
+        if (tableOrderItems.getColumnModel().getColumnCount() > 0) {
+            tableOrderItems.getColumnModel().getColumn(0).setMaxWidth(50);
+            tableOrderItems.getColumnModel().getColumn(1).setMaxWidth(250);
+            tableOrderItems.getColumnModel().getColumn(2).setMaxWidth(250);
+            tableOrderItems.getColumnModel().getColumn(3).setMaxWidth(350);
+            tableOrderItems.getColumnModel().getColumn(4).setMaxWidth(200);
+            tableOrderItems.getColumnModel().getColumn(5).setMaxWidth(350);
+            tableOrderItems.getColumnModel().getColumn(6).setMaxWidth(250);
+            tableOrderItems.getColumnModel().getColumn(7).setMaxWidth(250);
+            tableOrderItems.getColumnModel().getColumn(8).setMaxWidth(450);
+            tableOrderItems.getColumnModel().getColumn(9).setMaxWidth(250);
+            tableOrderItems.getColumnModel().getColumn(10).setMaxWidth(60);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -97,7 +111,7 @@ public class ListOrdersItems extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(

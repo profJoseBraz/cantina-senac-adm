@@ -12,20 +12,28 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Order {
     private int id;
+    
+    @SerializedName("forma_pagamento")
     private PaymentMethod paymentMethod;
+    
+    @SerializedName("nome_cliente")
     private String customerName;
     
     @SerializedName("data")
     private String date;
 
+    @SerializedName("hora")
+    private String time;
+    
     public Order() {
     }
 
-    public Order(int id, PaymentMethod paymentMethod, String customerName, String date) {
+    public Order(int id, PaymentMethod paymentMethod, String customerName, String date, String time) {
         this.id = id;
         this.paymentMethod = paymentMethod;
         this.customerName = customerName;
         this.date = date;
+        this.time = time;
     }
 
     public int getId() {
@@ -60,8 +68,16 @@ public class Order {
         this.date = date;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", paymentMethod=" + paymentMethod + ", customerName=" + customerName + ", date=" + date + '}';
+        return "Order{" + "id=" + id + ", paymentMethod=" + paymentMethod + ", customerName=" + customerName + ", date=" + date + ", time=" + time + '}';
     }
 }

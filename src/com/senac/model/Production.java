@@ -12,6 +12,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Production {
     private int id;
+    
+    @SerializedName("produto")
     private Product product;
     
     @SerializedName("data")
