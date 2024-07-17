@@ -4,6 +4,20 @@
  */
 package com.senac.view.home.cadaster;
 
+import com.senac.consumer.CategoryClient;
+import com.senac.consumer.ProductionClient;
+import com.senac.consumer.ProductsClient;
+import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.http.HttpClient;
+import com.senac.model.Category;
+import com.senac.model.Production;
+import com.senac.view.home.LoadingDialog;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author grander.3993
@@ -15,7 +29,61 @@ public class CadProduction extends javax.swing.JFrame {
      */
     public CadProduction() {
         initComponents();
+        
+                listAll(
+            (DefaultTableModel) TableResults.getModel(), 
+            new ProductionClient().getAllProductions(new CertManager(), new HttpClient()), 
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(TableResults)));
+    
+        setComponentsInitialState();
+        
+        setLocationRelativeTo(null);
     }
+    
+        private void setComponentsInitialState(){
+        jtfSearch.setEnabled(false);
+    }
+        
+    
+    
+    public void listAll(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureCategories, LoadingDialog loadingDialog){
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+        
+        futureCategories.thenAccept(productions -> {
+            tableModel.setRowCount(0);
+        
+            for (Production production : productions) {
+                tableModel.addRow(new Object[]{production.getProduct().getId(), production.getProduct().getName(), production.getProduct().getDescription(), production.getProduct().getValue(), production.getProduct().getCategory().getName()});
+            }
+            
+            loadingDialog.dispose();
+        }).exceptionally(ex -> {
+            System.err.println("Erro ao listar categorias: " + ex.getMessage());
+            loadingDialog.dispose();
+            return null;
+        });
+    }
+    
+    public void listByName(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureCategories, LoadingDialog loadingDialog){
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+        
+        futureCategories.thenAccept(products -> {
+            tableModel.setRowCount(0);
+        
+            for (Production production : products) {
+               tableModel.addRow(new Object[]{production.getProduct().getId(), production.getProduct().getName(), production.getProduct().getDescription(), production.getProduct().getValue(), production.getProduct().getCategory().getName()});
+            }
+            
+            loadingDialog.dispose();
+        }).exceptionally(ex -> {
+            System.err.println("Local: listByName" + ex.getMessage());
+            loadingDialog.dispose();
+            return null;
+        });
+    }
+    
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,41 +100,41 @@ public class CadProduction extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         jTextField7 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jbtnCadastrar = new javax.swing.JButton();
+        jbtnDeletar = new javax.swing.JButton();
+        jbtCancelar = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jcbFiltros = new javax.swing.JComboBox<>();
         jPanel13 = new javax.swing.JPanel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        jcbTables = new javax.swing.JComboBox<>();
         jPanel10 = new javax.swing.JPanel();
-        jTextField6 = new javax.swing.JTextField();
+        jtfSearch = new javax.swing.JTextField();
         jPanel14 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TableResults = new javax.swing.JTable();
         jPanel15 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        TableProduction = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
+        jtfProductName = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
-        jTextField4 = new javax.swing.JTextField();
+        jtfDateProduction = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
-        jTextField3 = new javax.swing.JTextField();
+        jtfQuantity = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
-        jTextField5 = new javax.swing.JTextField();
+        jtfValue = new javax.swing.JTextField();
         jPanel16 = new javax.swing.JPanel();
-        jTextField8 = new javax.swing.JTextField();
+        jtfIdCategory = new javax.swing.JTextField();
         jPanel17 = new javax.swing.JPanel();
-        jTextField9 = new javax.swing.JTextField();
+        jtfSchedulesProduction = new javax.swing.JTextField();
         jPanel19 = new javax.swing.JPanel();
-        jTextField11 = new javax.swing.JTextField();
+        jtfProductId = new javax.swing.JTextField();
         jPanel20 = new javax.swing.JPanel();
-        jTextField12 = new javax.swing.JTextField();
+        jtfCategory = new javax.swing.JTextField();
         jPanel21 = new javax.swing.JPanel();
-        jTextField13 = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
+        jtfDescription = new javax.swing.JTextField();
+        jbtnAdicionarProduto = new javax.swing.JButton();
 
         jButton4.setText("jButton4");
 
@@ -121,24 +189,24 @@ public class CadProduction extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("CADASTRAR PRODUÇÃO");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jbtnCadastrar.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnCadastrar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jbtnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        jbtnCadastrar.setText("CADASTRAR PRODUÇÃO");
+        jbtnCadastrar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
-        jButton2.setBackground(new java.awt.Color(0, 0, 0));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Excluir");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jButton2.setRequestFocusEnabled(false);
+        jbtnDeletar.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnDeletar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jbtnDeletar.setForeground(new java.awt.Color(255, 255, 255));
+        jbtnDeletar.setText("Excluir");
+        jbtnDeletar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jbtnDeletar.setRequestFocusEnabled(false);
 
-        jButton3.setBackground(new java.awt.Color(0, 0, 0));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Cancelar");
-        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jbtCancelar.setBackground(new java.awt.Color(0, 0, 0));
+        jbtCancelar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jbtCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        jbtCancelar.setText("Cancelar");
+        jbtCancelar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jPanel7.setBackground(new java.awt.Color(51, 51, 51));
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtragem", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
@@ -148,8 +216,8 @@ public class CadProduction extends javax.swing.JFrame {
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Filtros", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel11.setForeground(new java.awt.Color(255, 255, 255));
 
-        jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "NOME" }));
+        jcbFiltros.setForeground(new java.awt.Color(255, 255, 255));
+        jcbFiltros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "NOME" }));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -157,13 +225,13 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, 0, 142, Short.MAX_VALUE)
+                .addComponent(jcbFiltros, 0, 142, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jcbFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 8, Short.MAX_VALUE))
         );
 
@@ -171,7 +239,12 @@ public class CadProduction extends javax.swing.JFrame {
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tabelas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel13.setForeground(new java.awt.Color(255, 255, 255));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Produtos", "Formas de Pagamento" }));
+        jcbTables.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Produtos", "Formas de Pagamento" }));
+        jcbTables.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbTablesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -179,13 +252,13 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox3, 0, 142, Short.MAX_VALUE)
+                .addComponent(jcbTables, 0, 142, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jcbTables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 6, Short.MAX_VALUE))
         );
 
@@ -193,16 +266,16 @@ public class CadProduction extends javax.swing.JFrame {
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Barra de pesquisa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel10.setForeground(new java.awt.Color(255, 255, 255));
 
-        jTextField6.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField6.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField6.setBorder(null);
-        jTextField6.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField6.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField6.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        jtfSearch.setBackground(new java.awt.Color(51, 51, 51));
+        jtfSearch.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfSearch.setForeground(new java.awt.Color(255, 255, 255));
+        jtfSearch.setBorder(null);
+        jtfSearch.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfSearch.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+                jtfSearchActionPerformed(evt);
             }
         });
 
@@ -212,12 +285,12 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField6)
+                .addComponent(jtfSearch)
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+            .addComponent(jtfSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -249,11 +322,16 @@ public class CadProduction extends javax.swing.JFrame {
 
         jScrollPane1.setBackground(new java.awt.Color(51, 51, 51));
         jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane1MouseClicked(evt);
+            }
+        });
 
-        jTable1.setBackground(new java.awt.Color(51, 51, 51));
-        jTable1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable1.setForeground(new java.awt.Color(255, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TableResults.setBackground(new java.awt.Color(51, 51, 51));
+        TableResults.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        TableResults.setForeground(new java.awt.Color(255, 255, 255));
+        TableResults.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -269,7 +347,17 @@ public class CadProduction extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        TableResults.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableResultsMouseClicked(evt);
+            }
+        });
+        TableResults.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TableResultsKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(TableResults);
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -294,10 +382,10 @@ public class CadProduction extends javax.swing.JFrame {
         jScrollPane2.setBackground(new java.awt.Color(51, 51, 51));
         jScrollPane2.setForeground(new java.awt.Color(255, 255, 255));
 
-        jTable2.setBackground(new java.awt.Color(51, 51, 51));
-        jTable2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jTable2.setForeground(new java.awt.Color(255, 255, 255));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        TableProduction.setBackground(new java.awt.Color(51, 51, 51));
+        TableProduction.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        TableProduction.setForeground(new java.awt.Color(255, 255, 255));
+        TableProduction.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -313,7 +401,7 @@ public class CadProduction extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(TableProduction);
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -335,16 +423,16 @@ public class CadProduction extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nome do produto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jTextField2.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField2.setBorder(null);
-        jTextField2.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField2.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField2.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        jtfProductName.setBackground(new java.awt.Color(51, 51, 51));
+        jtfProductName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfProductName.setForeground(new java.awt.Color(255, 255, 255));
+        jtfProductName.setBorder(null);
+        jtfProductName.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfProductName.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfProductName.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfProductName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                jtfProductNameActionPerformed(evt);
             }
         });
 
@@ -354,30 +442,30 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                .addComponent(jtfProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jTextField2)
+                .addComponent(jtfProductName)
                 .addContainerGap())
         );
 
         jPanel5.setBackground(new java.awt.Color(51, 51, 51));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Data da produção (DD/MM/AAAA)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jTextField4.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField4.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField4.setBorder(null);
-        jTextField4.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField4.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField4.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        jtfDateProduction.setBackground(new java.awt.Color(51, 51, 51));
+        jtfDateProduction.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfDateProduction.setForeground(new java.awt.Color(255, 255, 255));
+        jtfDateProduction.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfDateProduction.setBorder(null);
+        jtfDateProduction.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfDateProduction.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfDateProduction.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfDateProduction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                jtfDateProductionActionPerformed(evt);
             }
         });
 
@@ -387,30 +475,30 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(jtfDateProduction, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jTextField4)
+                .addComponent(jtfDateProduction)
                 .addContainerGap())
         );
 
         jPanel4.setBackground(new java.awt.Color(51, 51, 51));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Quantidade", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jTextField3.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField3.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField3.setBorder(null);
-        jTextField3.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField3.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField3.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        jtfQuantity.setBackground(new java.awt.Color(51, 51, 51));
+        jtfQuantity.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfQuantity.setForeground(new java.awt.Color(255, 255, 255));
+        jtfQuantity.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfQuantity.setBorder(null);
+        jtfQuantity.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfQuantity.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfQuantity.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfQuantity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                jtfQuantityActionPerformed(evt);
             }
         });
 
@@ -420,30 +508,30 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addComponent(jtfQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jTextField3)
+                .addComponent(jtfQuantity)
                 .addContainerGap())
         );
 
         jPanel9.setBackground(new java.awt.Color(51, 51, 51));
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Valor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jTextField5.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField5.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField5.setBorder(null);
-        jTextField5.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField5.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField5.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        jtfValue.setBackground(new java.awt.Color(51, 51, 51));
+        jtfValue.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfValue.setForeground(new java.awt.Color(255, 255, 255));
+        jtfValue.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfValue.setBorder(null);
+        jtfValue.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfValue.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfValue.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                jtfValueActionPerformed(evt);
             }
         });
 
@@ -453,30 +541,30 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addComponent(jtfValue, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addComponent(jTextField5)
+                .addComponent(jtfValue)
                 .addContainerGap())
         );
 
         jPanel16.setBackground(new java.awt.Color(51, 51, 51));
         jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ID da categoria", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jTextField8.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField8.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField8.setBorder(null);
-        jTextField8.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField8.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField8.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+        jtfIdCategory.setBackground(new java.awt.Color(51, 51, 51));
+        jtfIdCategory.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfIdCategory.setForeground(new java.awt.Color(255, 255, 255));
+        jtfIdCategory.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfIdCategory.setBorder(null);
+        jtfIdCategory.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfIdCategory.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfIdCategory.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfIdCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
+                jtfIdCategoryActionPerformed(evt);
             }
         });
 
@@ -486,30 +574,30 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                .addComponent(jtfIdCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
-                .addComponent(jTextField8)
+                .addComponent(jtfIdCategory)
                 .addContainerGap())
         );
 
         jPanel17.setBackground(new java.awt.Color(51, 51, 51));
         jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Horário da produção", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jTextField9.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField9.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField9.setBorder(null);
-        jTextField9.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField9.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField9.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+        jtfSchedulesProduction.setBackground(new java.awt.Color(51, 51, 51));
+        jtfSchedulesProduction.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfSchedulesProduction.setForeground(new java.awt.Color(255, 255, 255));
+        jtfSchedulesProduction.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfSchedulesProduction.setBorder(null);
+        jtfSchedulesProduction.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfSchedulesProduction.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfSchedulesProduction.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfSchedulesProduction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
+                jtfSchedulesProductionActionPerformed(evt);
             }
         });
 
@@ -519,29 +607,29 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addComponent(jtfSchedulesProduction, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
-                .addComponent(jTextField9)
+                .addComponent(jtfSchedulesProduction)
                 .addContainerGap())
         );
 
         jPanel19.setBackground(new java.awt.Color(51, 51, 51));
         jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ID", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jTextField11.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField11.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField11.setBorder(null);
-        jTextField11.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField11.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField11.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField11.addActionListener(new java.awt.event.ActionListener() {
+        jtfProductId.setBackground(new java.awt.Color(51, 51, 51));
+        jtfProductId.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfProductId.setForeground(new java.awt.Color(255, 255, 255));
+        jtfProductId.setBorder(null);
+        jtfProductId.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfProductId.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfProductId.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfProductId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField11ActionPerformed(evt);
+                jtfProductIdActionPerformed(evt);
             }
         });
 
@@ -551,29 +639,29 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel19Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                .addComponent(jtfProductId, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel19Layout.createSequentialGroup()
-                .addComponent(jTextField11)
+                .addComponent(jtfProductId)
                 .addContainerGap())
         );
 
         jPanel20.setBackground(new java.awt.Color(51, 51, 51));
         jPanel20.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Categoria", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jTextField12.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField12.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField12.setBorder(null);
-        jTextField12.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField12.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField12.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField12.addActionListener(new java.awt.event.ActionListener() {
+        jtfCategory.setBackground(new java.awt.Color(51, 51, 51));
+        jtfCategory.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfCategory.setForeground(new java.awt.Color(255, 255, 255));
+        jtfCategory.setBorder(null);
+        jtfCategory.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfCategory.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfCategory.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField12ActionPerformed(evt);
+                jtfCategoryActionPerformed(evt);
             }
         });
 
@@ -583,29 +671,29 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField12, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addComponent(jtfCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel20Layout.createSequentialGroup()
-                .addComponent(jTextField12)
+                .addComponent(jtfCategory)
                 .addContainerGap())
         );
 
         jPanel21.setBackground(new java.awt.Color(51, 51, 51));
         jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Descrição", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jTextField13.setBackground(new java.awt.Color(51, 51, 51));
-        jTextField13.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField13.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField13.setBorder(null);
-        jTextField13.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField13.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jTextField13.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jTextField13.addActionListener(new java.awt.event.ActionListener() {
+        jtfDescription.setBackground(new java.awt.Color(51, 51, 51));
+        jtfDescription.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jtfDescription.setForeground(new java.awt.Color(255, 255, 255));
+        jtfDescription.setBorder(null);
+        jtfDescription.setCaretColor(new java.awt.Color(255, 255, 255));
+        jtfDescription.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jtfDescription.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        jtfDescription.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField13ActionPerformed(evt);
+                jtfDescriptionActionPerformed(evt);
             }
         });
 
@@ -615,23 +703,23 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel21Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField13, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                .addComponent(jtfDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel21Layout.setVerticalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel21Layout.createSequentialGroup()
-                .addComponent(jTextField13)
+                .addComponent(jtfDescription)
                 .addContainerGap())
         );
 
-        jButton5.setBackground(new java.awt.Color(0, 255, 0));
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setText("Adicionar produto");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jbtnAdicionarProduto.setBackground(new java.awt.Color(0, 255, 0));
+        jbtnAdicionarProduto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jbtnAdicionarProduto.setForeground(new java.awt.Color(0, 0, 0));
+        jbtnAdicionarProduto.setText("Adicionar produto");
+        jbtnAdicionarProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jbtnAdicionarProdutoActionPerformed(evt);
             }
         });
 
@@ -645,11 +733,11 @@ public class CadProduction extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jbtnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jbtnDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jbtCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(8, 8, 8))
                             .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -664,7 +752,7 @@ public class CadProduction extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jbtnAdicionarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -703,14 +791,14 @@ public class CadProduction extends javax.swing.JFrame {
                             .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jbtnAdicionarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(12, 12, 12)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -728,53 +816,86 @@ public class CadProduction extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void jtfProductNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfProductNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_jtfProductNameActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void jtfQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfQuantityActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_jtfQuantityActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void jtfDateProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDateProductionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_jtfDateProductionActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void jtfSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_jtfSearchActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void jtfValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfValueActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_jtfValueActionPerformed
 
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7ActionPerformed
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+    private void jtfIdCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfIdCategoryActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
+    }//GEN-LAST:event_jtfIdCategoryActionPerformed
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void jtfSchedulesProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfSchedulesProductionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_jtfSchedulesProductionActionPerformed
 
-    private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
+    private void jtfProductIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfProductIdActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField11ActionPerformed
+    }//GEN-LAST:event_jtfProductIdActionPerformed
 
-    private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
+    private void jtfCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCategoryActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField12ActionPerformed
+    }//GEN-LAST:event_jtfCategoryActionPerformed
 
-    private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
+    private void jtfDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDescriptionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField13ActionPerformed
+    }//GEN-LAST:event_jtfDescriptionActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jbtnAdicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAdicionarProdutoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_jbtnAdicionarProdutoActionPerformed
+
+    private void jcbTablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbTablesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbTablesActionPerformed
+
+    private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
+        
+        
+            
+    }//GEN-LAST:event_jScrollPane1MouseClicked
+
+    private void TableResultsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TableResultsKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TableResultsKeyPressed
+
+    private void TableResultsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableResultsMouseClicked
+        if(evt.getClickCount() == 2){
+            DefaultTableModel tableModel = (DefaultTableModel) TableResults.getModel();
+            String ProductId = String.valueOf(tableModel.getValueAt(TableResults.getSelectedRow(), 0));
+            String ProductName = String.valueOf(tableModel.getValueAt(TableResults.getSelectedRow(), 1));
+            String ProductDesc = String.valueOf(tableModel.getValueAt(TableResults.getSelectedRow(), 2));
+            String ProductValue = String.valueOf(tableModel.getValueAt(TableResults.getSelectedRow(), 3));  
+            String ProductIdCategory = "";
+            String ProductCategory = String.valueOf(tableModel.getValueAt(TableResults.getSelectedRow(), 4)); 
+            
+            jtfProductId.setText(ProductId);
+            jtfProductName.setText(ProductName);
+            jtfDescription.setText(ProductDesc);
+            jtfValue.setText(ProductValue);
+            jtfCategory.setText(ProductCategory);
+            
+        }
+    }//GEN-LAST:event_TableResultsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -819,13 +940,9 @@ public class CadProduction extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JTable TableProduction;
+    private javax.swing.JTable TableResults;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -846,19 +963,23 @@ public class CadProduction extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JButton jbtCancelar;
+    private javax.swing.JButton jbtnAdicionarProduto;
+    private javax.swing.JButton jbtnCadastrar;
+    private javax.swing.JButton jbtnDeletar;
+    private javax.swing.JComboBox<String> jcbFiltros;
+    private javax.swing.JComboBox<String> jcbTables;
+    private javax.swing.JTextField jtfCategory;
+    private javax.swing.JTextField jtfDateProduction;
+    private javax.swing.JTextField jtfDescription;
+    private javax.swing.JTextField jtfIdCategory;
+    private javax.swing.JTextField jtfProductId;
+    private javax.swing.JTextField jtfProductName;
+    private javax.swing.JTextField jtfQuantity;
+    private javax.swing.JTextField jtfSchedulesProduction;
+    private javax.swing.JTextField jtfSearch;
+    private javax.swing.JTextField jtfValue;
     // End of variables declaration//GEN-END:variables
 }

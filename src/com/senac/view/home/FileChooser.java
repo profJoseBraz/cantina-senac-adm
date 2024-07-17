@@ -29,7 +29,10 @@ public class FileChooser extends javax.swing.JFrame {
     public FileChooser() {
         initComponents();
         
+        setLocationRelativeTo(null);
+        
         int responseFileChooser = jFileChooser.showOpenDialog(null);
+        
         FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("Apenas .png", "png");
         jFileChooser.setAcceptAllFileFilterUsed(false);
         jFileChooser.addChoosableFileFilter(fileFilter);
@@ -38,6 +41,7 @@ public class FileChooser extends javax.swing.JFrame {
         if(responseFileChooser == jFileChooser.APPROVE_OPTION){
             try {
                 File selectedFile = jFileChooser.getSelectedFile();
+                
                 Constantes.FilePath = selectedFile;
                 
                 
@@ -52,7 +56,8 @@ public class FileChooser extends javax.swing.JFrame {
                 
                 this.dispose();
                 
-            } catch (IOException ex) {
+            } 
+            catch (IOException ex) {
                 Logger.getLogger(FileChooser.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -88,11 +93,11 @@ public class FileChooser extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jFileChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 1123, Short.MAX_VALUE)
+            .addComponent(jFileChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 762, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jFileChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+            .addComponent(jFileChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
         );
 
         pack();
