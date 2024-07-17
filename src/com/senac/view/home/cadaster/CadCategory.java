@@ -66,7 +66,7 @@ public class CadCategory extends javax.swing.JFrame {
 
         jButton4.setText("jButton4");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro categoria");
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
@@ -135,6 +135,16 @@ public class CadCategory extends javax.swing.JFrame {
                 .addComponent(jtfName, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jbtnCadastrar.setBackground(new java.awt.Color(0, 0, 0));
+        jbtnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        jbtnCadastrar.setText("Cadastrar");
+        jbtnCadastrar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jbtnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnCadastrarActionPerformed(evt);
+            }
+        });
 
         jbtnDeletar.setBackground(new java.awt.Color(0, 0, 0));
         jbtnDeletar.setForeground(new java.awt.Color(255, 255, 255));
