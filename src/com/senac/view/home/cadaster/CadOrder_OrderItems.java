@@ -74,7 +74,7 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
 
         jTextField1.setText("jTextField1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro categoria");
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));

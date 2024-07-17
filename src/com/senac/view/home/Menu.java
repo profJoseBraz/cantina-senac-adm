@@ -16,6 +16,7 @@ import com.senac.view.home.Lists.ListPaymentTypes;
 import com.senac.view.home.Lists.ListProduct;
 import com.senac.view.home.Lists.ListProduction;
 import com.senac.view.home.cadaster.CadProduct;
+import com.senac.view.home.cadaster.CadProduction;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import javax.swing.JFrame;
@@ -325,7 +326,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void miCadProducaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCadProducaoActionPerformed
         if (Forms.CadProduction == null)
-//            Forms.CadProduction = new CadProduction();
+            Forms.CadProduction = new CadProduction();
 
         Forms.CadProduction.setVisible(true);
     }//GEN-LAST:event_miCadProducaoActionPerformed
