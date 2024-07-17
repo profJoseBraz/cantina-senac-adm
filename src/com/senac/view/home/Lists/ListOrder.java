@@ -30,7 +30,7 @@ public class ListOrder extends javax.swing.JFrame {
             listAll(
                 (DefaultTableModel) tableOrder.getModel(), 
                 new OrderClient().getAllOrder(new CertManager(), new HttpClient()), 
-                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableOrder)));
+                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableOrder), "Por favor, aguarde."));
 
             setComponentsInitialState();
         }

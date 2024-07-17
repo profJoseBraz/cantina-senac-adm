@@ -40,7 +40,7 @@ public class ListProduction extends javax.swing.JFrame {
         listAllProduction(
                 (DefaultTableModel) tableProduction.getModel(), 
                 new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), 
-                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableProduction)));
+                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableProduction), "Por favor, aguarde..."));
 
             setComponentsInitialState();
 
@@ -261,15 +261,15 @@ public class ListProduction extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
        switch(jcbFilterType.getSelectedIndex()){
             case 0:
-                listAllProduction((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), new LoadingDialog(this));
+                listAllProduction((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
             case 3:
                 String nameProd = jtfFilterCriteria.getText();
-                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByNameProd(new CertManager(), new HttpClient(), nameProd), new LoadingDialog(this));
+                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByNameProd(new CertManager(), new HttpClient(), nameProd), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
             case 4:
                 String category = jtfFilterCriteria.getText();
-                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByCategory(new CertManager(), new HttpClient(), category), new LoadingDialog(this));
+                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByCategory(new CertManager(), new HttpClient(), category), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
             
         }

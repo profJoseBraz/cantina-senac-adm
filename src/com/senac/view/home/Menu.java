@@ -43,7 +43,7 @@ public class Menu extends javax.swing.JFrame {
         
         getConfigs(
             new ConfigClient().getDdImgsToken(new CertManager(), new HttpClient()), 
-            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)), ConfigClient.token);
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Carregando configurações do sistema."), ConfigClient.token);
         
         CentralizePanel.centralize(jPanel1, jpButtons);
     }
