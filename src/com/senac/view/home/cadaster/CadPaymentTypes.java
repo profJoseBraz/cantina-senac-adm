@@ -229,7 +229,7 @@ public class CadPaymentTypes extends javax.swing.JFrame {
                 new CertManager(), 
                 new HttpClient(), 
                 body), 
-            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)),
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Por favor, aguarde..."),
             "Método de pagamento salvo com sucesso.",
             "Erro ao salvar a método de pagamento.");
     }//GEN-LAST:event_jbtnCadastrarActionPerformed

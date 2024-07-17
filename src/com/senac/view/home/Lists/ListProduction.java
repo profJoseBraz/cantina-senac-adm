@@ -4,6 +4,27 @@
  */
 package com.senac.view.home.Lists;
 
+import com.senac.consumer.ProductionClient;
+import com.senac.consumer.ProductsClient;
+import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.formatters.MyCurrencyFormatter;
+import com.senac.helpers.formatters.MyDateFormatter;
+import com.senac.helpers.http.HttpClient;
+import com.senac.model.Production;
+import com.senac.view.home.LoadingDialog;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DateFormatter;
+
 /**
  *
  * @author grander.3993
@@ -16,8 +37,88 @@ public class ListProduction extends javax.swing.JFrame {
     public ListProduction() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
-    }
+        listAllProduction(
+                (DefaultTableModel) tableProduction.getModel(), 
+                new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), 
+                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableProduction), "Por favor, aguarde..."));
 
+            setComponentsInitialState();
+
+            setLocationRelativeTo(null);
+        }
+
+        private void setComponentsInitialState(){
+            jtfFilterCriteria.setEnabled(false);
+        }
+
+        public void listAllProduction(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(productions -> {
+                tableModel.setRowCount(0);
+
+                for (Production production : productions) {
+                    String formatteDate = MyDateFormatter.format(production.getDate(), "yyyy-MM-dd'T'HH:mm:ss.SSSX", "dd/MM/yyyy");
+                    String formattedValue = MyCurrencyFormatter.format(production.getProduct().getValue(), new Locale("pt", "BR"));
+                    
+                    tableModel.addRow(new Object[]{production.getId(), formatteDate, production.getAmount(), production.getObservation(),
+                    production.getProduct().getId() ,production.getProduct().getCategory().getName(), production.getProduct().getName(),
+                    production.getProduct().getDescription(), formattedValue});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar a produção: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
+            
+            public void listByCategory(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(productions -> {
+                tableModel.setRowCount(0);
+
+                for (Production production : productions) {
+                    String formatteDate = MyDateFormatter.format(production.getDate(), "yyyy-MM-dd'T'HH:mm:ss.SSSX", "dd/MM/yyyy");
+                    String formattedValue = MyCurrencyFormatter.format(production.getProduct().getValue(), new Locale("pt", "BR"));
+                    
+                    tableModel.addRow(new Object[]{production.getId(), formatteDate, production.getAmount(), production.getObservation(),
+                    production.getProduct().getId() ,production.getProduct().getCategory().getName(), production.getProduct().getName(),
+                    production.getProduct().getDescription(), formattedValue});                
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar produção: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+            }
+    
+            public void listByNameProd(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(productions -> {
+                tableModel.setRowCount(0);
+
+                for (Production production : productions) {
+                    String formatteDate = MyDateFormatter.format(production.getDate(), "yyyy-MM-dd'T'HH:mm:ss.SSSX", "dd/MM/yyyy");
+                    String formattedValue = MyCurrencyFormatter.format(production.getProduct().getValue(), new Locale("pt", "BR"));
+                    
+                    tableModel.addRow(new Object[]{production.getId(), formatteDate, production.getAmount(), production.getObservation(),
+                    production.getProduct().getId() ,production.getProduct().getCategory().getName(), production.getProduct().getName(),
+                    production.getProduct().getDescription(), formattedValue});                
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar produção: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+            }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,8 +141,23 @@ public class ListProduction extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 
         btnSearch.setText("Buscar");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "DATA", "NOME DO PRODUTO", "CATEGORIA" }));
+        jcbFilterType.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbFilterTypeItemStateChanged(evt);
+            }
+        });
+        jcbFilterType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbFilterTypeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,6 +201,17 @@ public class ListProduction extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tableProduction);
+        if (tableProduction.getColumnModel().getColumnCount() > 0) {
+            tableProduction.getColumnModel().getColumn(0).setMaxWidth(50);
+            tableProduction.getColumnModel().getColumn(1).setMaxWidth(250);
+            tableProduction.getColumnModel().getColumn(2).setMaxWidth(100);
+            tableProduction.getColumnModel().getColumn(3).setMaxWidth(650);
+            tableProduction.getColumnModel().getColumn(4).setMaxWidth(200);
+            tableProduction.getColumnModel().getColumn(5).setMaxWidth(200);
+            tableProduction.getColumnModel().getColumn(6).setMaxWidth(250);
+            tableProduction.getColumnModel().getColumn(7).setMaxWidth(800);
+            tableProduction.getColumnModel().getColumn(8).setMaxWidth(60);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -126,6 +253,35 @@ public class ListProduction extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jcbFilterTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbFilterTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbFilterTypeActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+       switch(jcbFilterType.getSelectedIndex()){
+            case 0:
+                listAllProduction((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
+            case 3:
+                String nameProd = jtfFilterCriteria.getText();
+                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByName(new CertManager(), new HttpClient(), nameProd), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
+            case 4:
+                String category = jtfFilterCriteria.getText();
+                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByCategory(new CertManager(), new HttpClient(), category), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
+            
+        }
+            }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void jcbFilterTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbFilterTypeItemStateChanged
+        if(jcbFilterType.getSelectedIndex() == 0){
+            jtfFilterCriteria.setText("");
+            jtfFilterCriteria.setEnabled(false);
+        }else{
+            jtfFilterCriteria.setEnabled(true);
+        }    }//GEN-LAST:event_jcbFilterTypeItemStateChanged
 
     /**
      * @param args the command line arguments

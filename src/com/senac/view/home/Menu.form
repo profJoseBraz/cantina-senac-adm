@@ -74,18 +74,18 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="miVisuPedido">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Pedidos"/>
+                <Property name="text" type="java.lang.String" value="Produtos"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miVisuPedidoActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="miVisuCardapio">
+            <MenuItem class="javax.swing.JMenuItem" name="miVisuPedidos">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cardapio"/>
+                <Property name="text" type="java.lang.String" value="Pedidos"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miVisuCardapioActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miVisuPedidosActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miVisuCategoria">
@@ -197,7 +197,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="btnCardapio" alignment="0" max="32767" attributes="0"/>
+                          <Component id="btnVisuOrder" alignment="0" max="32767" attributes="0"/>
                           <Component id="btnVerPedidos" alignment="0" max="32767" attributes="0"/>
                           <Component id="btnAddPedidos" alignment="0" min="-2" pref="288" max="-2" attributes="0"/>
                       </Group>
@@ -213,7 +213,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnVerPedidos" min="-2" pref="77" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnCardapio" min="-2" pref="77" max="-2" attributes="0"/>
+                      <Component id="btnVisuOrder" min="-2" pref="77" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -236,21 +236,21 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Sitka Text" size="24" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Ver Pedidos"/>
+                <Property name="text" type="java.lang.String" value="Ver Produtos"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerPedidosActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="btnCardapio">
+            <Component class="javax.swing.JButton" name="btnVisuOrder">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Sitka Text" size="24" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="-"/>
+                <Property name="text" type="java.lang.String" value="Ver Pedidos"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCardapioActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVisuOrderActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

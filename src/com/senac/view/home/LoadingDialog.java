@@ -15,8 +15,8 @@ import javax.swing.JProgressBar;
  * @author 10156
  */
 public class LoadingDialog extends JDialog{
-    public LoadingDialog(JFrame parent) {
-        super(parent, "Por favor, aguarde...", true); // Título e modal (bloqueia janela pai)
+    public LoadingDialog(JFrame parent, String title) {
+        super(parent, title, true); // Título e modal (bloqueia janela pai)
         
         JPanel contentPane = new JPanel();
         getContentPane().add(contentPane);

@@ -47,7 +47,7 @@ public class ProductsClient {
         });
     }
       
-public CompletableFuture<Boolean> postProduct(CertManager certManager, HttpClient httpClient, String body){
+    public CompletableFuture<Boolean> postProduct(CertManager certManager, HttpClient httpClient, String body){
         CompletableFuture<Boolean> resultFuture = new CompletableFuture<>();
 
         CompletableFuture.runAsync(() -> {
@@ -62,5 +62,22 @@ public CompletableFuture<Boolean> postProduct(CertManager certManager, HttpClien
         });
 
         return resultFuture;
+        }
+
+
+      public CompletableFuture<List<Product>> getProductByCategory(CertManager certManager, HttpClient httpClient, String category){
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/products/category", "name=" + category);
+
+            Gson gson = new Gson();
+            List<Product> product = gson.fromJson(res.toString(), new TypeToken<List<Product>>(){}.getType());
+
+            return product;
+        }).exceptionally(ex -> {
+            System.err.println("Método: getProductByCategory" + ex.getMessage());
+            return null;
+        });
+
     }
 }

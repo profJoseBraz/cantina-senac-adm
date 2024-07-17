@@ -4,14 +4,14 @@
  */
 package com.senac.view.home.Lists;
 
-import com.senac.consumer.CategoryClient;
-    import com.senac.consumer.ProductsClient;
+import com.senac.consumer.ProductsClient;
 import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.formatters.MyCurrencyFormatter;
 import com.senac.helpers.http.HttpClient;
-import com.senac.model.Category;
 import com.senac.model.Product;
 import com.senac.view.home.LoadingDialog;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -32,7 +32,7 @@ public class ListProduct extends javax.swing.JFrame {
             listAll(
                 (DefaultTableModel) tableProduct.getModel(), 
                 new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), 
-                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableProduct)));
+                new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableProduct), "Por favor, aguarde..."));
 
             setComponentsInitialState();
 
@@ -50,7 +50,9 @@ public class ListProduct extends javax.swing.JFrame {
                 tableModel.setRowCount(0);
 
                 for (Product product : products ) {
-                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), product.getValue()});
+                    String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
+                    
+                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), formattedValue});
                 }
 
                 loadingDialog.dispose();
@@ -62,22 +64,45 @@ public class ListProduct extends javax.swing.JFrame {
         }
 
         public void listByName(DefaultTableModel tableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
-        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(products -> {
+                tableModel.setRowCount(0);
+
+                for (Product product : products) {
+                    String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
+                    
+                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), formattedValue});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Produtos por Nome" + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
         
-        futureProducts.thenAccept(products -> {
-            tableModel.setRowCount(0);
         
-            for (Product product : products) {
-                tableModel.addRow(new Object[]{product.getId(), product.getName()});
-            }
-            
-            loadingDialog.dispose();
-        }).exceptionally(ex -> {
-            System.err.println("Erro ao listar Produtos por Nome" + ex.getMessage());
-            loadingDialog.dispose();
-            return null;
-        });
-    }
+        public void listByCategory(DefaultTableModel tableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(products -> {
+                tableModel.setRowCount(0);
+
+                for (Product product : products) {
+                    String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
+                    
+                    tableModel.addRow(new Object[]{product.getId(), product.getCategory().getName(), product.getName(), product.getDescription(), formattedValue});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar produtos: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,7 +137,7 @@ public class ListProduct extends javax.swing.JFrame {
             }
         });
 
-        jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "CATEGORIA", "NOME", "DESCRIÇÃO", "VALOR MAIOR QUE", "VALOR MENOR QUE", " " }));
+        jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "CATEGORIA", "NOME", " ", " " }));
         jcbFilterType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jcbFilterTypeItemStateChanged(evt);
@@ -158,6 +183,13 @@ public class ListProduct extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tableProduct);
+        if (tableProduct.getColumnModel().getColumnCount() > 0) {
+            tableProduct.getColumnModel().getColumn(0).setMaxWidth(50);
+            tableProduct.getColumnModel().getColumn(1).setMaxWidth(200);
+            tableProduct.getColumnModel().getColumn(2).setMaxWidth(300);
+            tableProduct.getColumnModel().getColumn(3).setMaxWidth(700);
+            tableProduct.getColumnModel().getColumn(4).setMaxWidth(60);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -227,11 +259,17 @@ public class ListProduct extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
        switch(jcbFilterType.getSelectedIndex()){
             case 0:
-                listAll((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), new LoadingDialog(this));
+                listAll((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
+                
+            case 2:
+                String category = jtfFilterCriteria.getText();
+                listByCategory((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductByCategory(new CertManager(), new HttpClient(), category), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
+                
             case 3:
                 String name = jtfFilterCriteria.getText();
-                listByName((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductByName(new CertManager(), new HttpClient(), name), new LoadingDialog(this));
+                listByName((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductByName(new CertManager(), new HttpClient(), name), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
         }
     }//GEN-LAST:event_btnSearchActionPerformed

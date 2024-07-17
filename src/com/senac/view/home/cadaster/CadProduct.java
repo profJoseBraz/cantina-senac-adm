@@ -528,7 +528,7 @@ public class CadProduct extends javax.swing.JFrame {
                 new CertManager(), 
                 new HttpClient(), 
                 body), 
-            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)),
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Por favor, aguarde..."),
             "Produto salvo com sucesso.",
             "Erro ao salvar o produto.");
         

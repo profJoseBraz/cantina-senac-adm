@@ -221,7 +221,7 @@ public class CadCategory extends javax.swing.JFrame {
                 new CertManager(), 
                 new HttpClient(), 
                 body), 
-            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)),
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Por favor, aguarde..."),
             "Categoria salva com sucesso.",
             "Erro ao salvar a categoria.");
     }//GEN-LAST:event_jbtnCadastrarActionPerformed
@@ -241,7 +241,7 @@ public class CadCategory extends javax.swing.JFrame {
                 new CertManager(), 
                 new HttpClient(), 
                 body), 
-            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this)),
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Por favor, aguarde..."),
             "Categoria salva com sucesso.",
             "Erro ao salvar a categoria.");
     }//GEN-LAST:event_jButton1ActionPerformed

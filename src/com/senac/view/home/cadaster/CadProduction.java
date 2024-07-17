@@ -32,8 +32,8 @@ public class CadProduction extends javax.swing.JFrame {
         
                 listAll(
             (DefaultTableModel) TableResults.getModel(), 
-            new ProductionClient().getAllProductions(new CertManager(), new HttpClient()), 
-            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(TableResults)));
+            new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), 
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(TableResults), "Por favor, aguarde..."));
     
         setComponentsInitialState();
         

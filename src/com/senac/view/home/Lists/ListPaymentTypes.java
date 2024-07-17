@@ -26,12 +26,12 @@ public class ListPaymentTypes extends javax.swing.JFrame {
      */
     public ListPaymentTypes() {
         initComponents();
-        setExtendedState(MAXIMIZED_BOTH);
+     
         
                 listAll(
             (DefaultTableModel) tablePaymentTypes.getModel(), 
             new PaymentMethodClient().getAllPaymentMethods(new CertManager(), new HttpClient()),
-            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tablePaymentTypes)));
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tablePaymentTypes), "Por favor, aguarde..."));
     
 //        setComponentsInitialState();
         
@@ -90,6 +90,9 @@ public class ListPaymentTypes extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tablePaymentTypes);
+        if (tablePaymentTypes.getColumnModel().getColumnCount() > 0) {
+            tablePaymentTypes.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

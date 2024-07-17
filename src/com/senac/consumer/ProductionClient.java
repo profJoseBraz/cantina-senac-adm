@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class ProductionClient {
     
-     public CompletableFuture<List<Production>> getAllProductions(CertManager certManager, HttpClient httpClient) {
+     public CompletableFuture<List<Production>> getAllProduction(CertManager certManager, HttpClient httpClient) {
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
             StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production", "");
@@ -33,10 +33,25 @@ public class ProductionClient {
         });
     }
      
-      public CompletableFuture<List<Production>> getProductionsByName(CertManager certManager, HttpClient httpClient, String name){
+    public CompletableFuture<List<Production>> getProductionByCategory(CertManager certManager, HttpClient httpClient, String category){
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
-            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production", "name=" + name);
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production/products/category", "name=" + category);
+
+            Gson gson = new Gson();
+            List<Production> production = gson.fromJson(res.toString(), new TypeToken<List<Production>>(){}.getType());
+
+            return production;
+        }).exceptionally(ex -> {
+            System.err.println("Método: getProductByCategory" + ex.getMessage());
+            return null;
+        });
+    }
+     
+    public CompletableFuture<List<Production>> getProductionByName(CertManager certManager, HttpClient httpClient, String name){
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production/products", "name=" + name);
 
             Gson gson = new Gson();
             List<Production> production = gson.fromJson(res.toString(), new TypeToken<List<Production>>(){}.getType());
