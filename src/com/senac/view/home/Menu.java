@@ -334,7 +334,8 @@ public class Menu extends javax.swing.JFrame {
         if(Forms.ListOrder == null)
             Forms.ListOrder = new ListOrder();
         
-        Forms.ListProduct.setVisible(true);    }//GEN-LAST:event_btnVisuOrderActionPerformed
+        Forms.ListOrder.setVisible(true);    
+    }//GEN-LAST:event_btnVisuOrderActionPerformed
 
     private void miVisuPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVisuPedidoActionPerformed
         if (Forms.ListProduct == null)
