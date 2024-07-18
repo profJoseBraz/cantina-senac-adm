@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
  * @author 10156
  */
 public class OrderClient {
-         public CompletableFuture<List<Order>> getAllOrder(CertManager certManager, HttpClient httpClient) {
+    public CompletableFuture<List<Order>> getAllOrder(CertManager certManager, HttpClient httpClient) {
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
             StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/orders", "");
@@ -31,10 +31,10 @@ public class OrderClient {
             return null; // Handle error gracefully
         });
     } 
-                  public CompletableFuture<List<Order>> getCostumerNameOrder(CertManager certManager, HttpClient httpClient) {
+    public CompletableFuture<List<Order>> getCostumerNameOrder(CertManager certManager, HttpClient httpClient, String nameCostumer) {
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
-            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/orders", "");
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/orders", "customerName=" + nameCostumer);
 
             Gson gson = new Gson();
             List<Order> Order = gson.fromJson(res.toString(), new TypeToken<List<Order>>() {}.getType());
@@ -45,4 +45,18 @@ public class OrderClient {
             return null; // Handle error gracefully
         });
     } 
+    public CompletableFuture<List<Order>> getPaymentMethod(CertManager certManager, HttpClient httpClient, String paymentMethod) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/orders/paymentMethod", "name=" + paymentMethod);
+
+            Gson gson = new Gson();
+            List<Order> Order = gson.fromJson(res.toString(), new TypeToken<List<Order>>() {}.getType());
+
+            return Order;
+        }).exceptionally(ex -> {
+            System.err.println("Error in Order method: " + ex.getMessage());
+            return null; // Handle error gracefully
+        });
+    }
 }

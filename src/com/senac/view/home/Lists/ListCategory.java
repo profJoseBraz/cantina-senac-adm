@@ -48,7 +48,9 @@ public class ListCategory extends javax.swing.JFrame {
             tableModel.setRowCount(0);
         
             for (Category category : categories) {
-                tableModel.addRow(new Object[]{category.getId(), category.getName()});
+                tableModel.addRow(new Object[]{
+                    category.getId(),
+                    category.getName()});
             }
             
             loadingDialog.dispose();
@@ -66,7 +68,9 @@ public class ListCategory extends javax.swing.JFrame {
             tableModel.setRowCount(0);
         
             for (Category category : categories) {
-                tableModel.addRow(new Object[]{category.getId(), category.getName()});
+                tableModel.addRow(new Object[]{
+                    category.getId(),
+                    category.getName()});
             }
             
             loadingDialog.dispose();
