@@ -62,4 +62,21 @@ public class ProductionClient {
             return null;
         });
     }
+    
+    public CompletableFuture<Boolean> postProduction(CertManager certManager, HttpClient httpClient, String body){
+        CompletableFuture<Boolean> resultFuture = new CompletableFuture<>();
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                certManager.trustAllCerts();
+                boolean res = httpClient.makePostRequest(HttpClient.API_URL + "/production/add", body);
+                resultFuture.complete(res);
+            } catch (Exception ex) {
+                System.err.println("Classe: ProductionClient | Método: postProduction: " + ex.getMessage());
+                resultFuture.completeExceptionally(ex);
+            }
+        });
+
+        return resultFuture;
+        }
 }
