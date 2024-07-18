@@ -4,6 +4,7 @@
  */
 package com.senac.view.home.Lists;
 
+import com.senac.consumer.CategoryClient;
 import com.senac.consumer.OrderClient;
 import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.http.HttpClient;
@@ -61,7 +62,8 @@ public class ListOrder extends javax.swing.JFrame {
                 return null;
             });
         }
-                public void listByCostumerName(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
+        
+        public void listByCustomerName(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
             SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
 
             futureOrders.thenAccept(orders -> {
@@ -83,6 +85,29 @@ public class ListOrder extends javax.swing.JFrame {
                 return null;
             });
         } 
+        
+                public void listByPaymentMethod(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureOrders.thenAccept(orders -> {
+                tableModel.setRowCount(0);
+
+                for (Order order : orders ) {                    
+                    tableModel.addRow(new Object[]{
+                        order.getId(), 
+                        order.getPaymentMethod().getName(), 
+                        order.getCustomerName(), 
+                        order.getDate(),
+                        order.getTime()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Order: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
     
 
     /**
@@ -112,6 +137,11 @@ public class ListOrder extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 
         jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "FORMA DE PAGAMENTO", "CLIENTE", "DATA" }));
+        jcbFilterType.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbFilterTypeItemStateChanged(evt);
+            }
+        });
 
         btnSearch.setText("Buscar");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -210,10 +240,32 @@ public class ListOrder extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
+ 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
+        switch(jcbFilterType.getSelectedIndex()){
+            case 0:
+                listAll((DefaultTableModel) tableOrder.getModel(), new OrderClient().getAllOrder(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
+            case 2:
+                String paymentMethod = jtfFilterCriteria.getText();
+                listByCustomerName((DefaultTableModel) tableOrder.getModel(), new OrderClient().getPaymentMethod(new CertManager(), new HttpClient(),paymentMethod), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;                
+            case 3:
+                String nameCostumer = jtfFilterCriteria.getText();
+                listByCustomerName((DefaultTableModel) tableOrder.getModel(), new OrderClient().getCostumerNameOrder(new CertManager(), new HttpClient(),nameCostumer), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void jcbFilterTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbFilterTypeItemStateChanged
+        if(jcbFilterType.getSelectedIndex() == 0){
+            jtfFilterCriteria.setText("");
+            jtfFilterCriteria.setEnabled(false);
+        }else{
+            jtfFilterCriteria.setEnabled(true);
+        }    }//GEN-LAST:event_jcbFilterTypeItemStateChanged
 
     /**
      * @param args the command line arguments
