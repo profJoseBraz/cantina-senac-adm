@@ -79,7 +79,7 @@ public class CadProduction extends javax.swing.JFrame {
             
             loadingDialog.dispose();
         }).exceptionally(ex -> {
-            System.err.println("Erro ao listar categorias: " + ex.getMessage());
+            System.err.println("Erro ao listar produtos: " + ex.getMessage());
             loadingDialog.dispose();
             return null;
         });
@@ -141,7 +141,6 @@ public class CadProduction extends javax.swing.JFrame {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         jPanel3 = new javax.swing.JPanel();
         jbtnCadastrar = new javax.swing.JButton();
-        jbtnDeletar = new javax.swing.JButton();
         jbtCancelar = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
@@ -239,13 +238,6 @@ public class CadProduction extends javax.swing.JFrame {
                 jbtnCadastrarActionPerformed(evt);
             }
         });
-
-        jbtnDeletar.setBackground(new java.awt.Color(204, 204, 204));
-        jbtnDeletar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jbtnDeletar.setForeground(new java.awt.Color(0, 0, 0));
-        jbtnDeletar.setText("Excluir");
-        jbtnDeletar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jbtnDeletar.setRequestFocusEnabled(false);
 
         jbtCancelar.setBackground(new java.awt.Color(204, 204, 204));
         jbtCancelar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -349,8 +341,8 @@ public class CadProduction extends javax.swing.JFrame {
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addComponent(jtfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jtfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Aplicar filtros"));
@@ -375,7 +367,7 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jButton1)
-                .addGap(0, 5, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -466,8 +458,8 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
@@ -520,7 +512,7 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -553,7 +545,7 @@ public class CadProduction extends javax.swing.JFrame {
         );
         panelIDLayout.setVerticalGroup(
             panelIDLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtfProductId)
+            .addComponent(jtfProductId, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
         );
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -765,7 +757,6 @@ public class CadProduction extends javax.swing.JFrame {
         jtfObs.setBackground(new java.awt.Color(255, 255, 255));
         jtfObs.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jtfObs.setForeground(new java.awt.Color(0, 0, 0));
-        jtfObs.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfObs.setBorder(null);
         jtfObs.setCaretColor(new java.awt.Color(0, 0, 0));
         jtfObs.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
@@ -782,7 +773,7 @@ public class CadProduction extends javax.swing.JFrame {
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jtfObs, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
+                .addComponent(jtfObs, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel18Layout.setVerticalGroup(
@@ -801,9 +792,7 @@ public class CadProduction extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jbtnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(251, 251, 251)
-                                .addComponent(jbtnDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 865, Short.MAX_VALUE)
                                 .addComponent(jbtCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jPanel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -860,12 +849,11 @@ public class CadProduction extends javax.swing.JFrame {
                             .addComponent(jbtnAdicionarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -882,9 +870,69 @@ public class CadProduction extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtfProductIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfProductIdActionPerformed
+    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtfProductIdActionPerformed
+    }//GEN-LAST:event_jTextField7ActionPerformed
+
+    private void jtfObsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfObsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfObsActionPerformed
+
+    private void jtfProductNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfProductNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfProductNameActionPerformed
+
+    private void jbtnAdicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAdicionarProdutoActionPerformed
+        String localValues = String.valueOf(LocalDateTime.now());
+        String FormatedHour = localValues.substring(11,19);
+
+        if (jtfProductId.getText().trim().isEmpty() ||
+            jtfDescription.getText().trim().isEmpty() ||
+            jtfValue.getText().trim().isEmpty() ||
+            jtfCategory.getText().trim().isEmpty() ||
+            jtfQuantity.getText().trim().isEmpty() ||
+            jtfDateProduction.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+        }
+        else {
+            DefaultTableModel tablemodel = (DefaultTableModel) TableProduction.getModel();
+
+            tablemodel.addRow(new String[] {
+                jtfProductId.getText().trim(),
+                jtfProductName.getText().trim(),
+                jtfQuantity.getText().trim(),
+                jtfValue.getText().trim(),
+                jtfCategory.getText().trim(),
+                jtfDescription.getText().trim(),
+                jtfDateProduction.getText().trim(),
+                FormatedHour,
+                jtfObs.getText().trim()
+
+            });
+
+            jtfProductId.setText("");
+            jtfProductName.setText("");
+            jtfQuantity.setText("");
+            jtfValue.setText("");
+            jtfCategory.setText("");
+            jtfDescription.setText("");
+            jtfObs.setText("");
+            jtfObs.getText().trim();
+        }
+    }//GEN-LAST:event_jbtnAdicionarProdutoActionPerformed
+
+    private void jtfDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDescriptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfDescriptionActionPerformed
+
+    private void jtfCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCategoryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfCategoryActionPerformed
+
+    private void jtfValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfValueActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfValueActionPerformed
 
     private void jtfQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfQuantityActionPerformed
         // TODO add your handling code here:
@@ -894,70 +942,40 @@ public class CadProduction extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfDateProductionActionPerformed
 
-    private void jtfSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfSearchActionPerformed
+    private void jtfProductIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfProductIdActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtfSearchActionPerformed
+    }//GEN-LAST:event_jtfProductIdActionPerformed
 
-    private void jtfValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfValueActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtfValueActionPerformed
+    private void TableProductionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableProductionMouseClicked
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+        TableProduction.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    int selectedRow = TableProduction.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        JPopupMenu popupMenu = new JPopupMenu();
+                        JMenuItem item1 = new JMenuItem("Remover " + "'" + TableProduction.getValueAt(selectedRow, 1) + "'");
+                        popupMenu.add(item1);
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
 
-    private void jtfCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCategoryActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtfCategoryActionPerformed
-
-    private void jbtnAdicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAdicionarProdutoActionPerformed
-       String localValues = String.valueOf(LocalDateTime.now());    
-       String FormatedHour = localValues.substring(11,19);
-    
-        if (jtfProductId.getText().trim().isEmpty() || 
-    jtfDescription.getText().trim().isEmpty() || 
-    jtfValue.getText().trim().isEmpty() || 
-    jtfCategory.getText().trim().isEmpty() || 
-    jtfQuantity.getText().trim().isEmpty() || 
-    jtfDateProduction.getText().trim().isEmpty()) {
-    
-    JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-    }
-        else {
-    DefaultTableModel tablemodel = (DefaultTableModel) TableProduction.getModel();
-    
-    tablemodel.addRow(new String[] {
-        jtfProductId.getText().trim(), 
-        jtfProductName.getText().trim(), 
-        jtfQuantity.getText().trim(), 
-        jtfValue.getText().trim(), 
-        jtfCategory.getText().trim(), 
-        jtfDescription.getText().trim(), 
-        jtfDateProduction.getText().trim(), 
-        FormatedHour,
-        jtfObs.getText().trim()
-           
-    });
-    
-        jtfProductId.setText("");
-        jtfProductName.setText("");
-        jtfQuantity.setText("");
-        jtfValue.setText("");
-        jtfCategory.setText("");
-        jtfDescription.setText("");
-        jtfObs.setText("");
-        jtfObs.getText().trim();
-}
-    }//GEN-LAST:event_jbtnAdicionarProdutoActionPerformed
-
-    private void jcbTablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbTablesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcbTablesActionPerformed
+                        item1.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                DefaultTableModel model = (DefaultTableModel) TableProduction.getModel();
+                                model.removeRow(selectedRow);
+                            }
+                        });
+                    } else {
+                        System.err.println("Nenhuma linha foi selecionada.");
+                    }
+                }
+            }
+        });
+    }//GEN-LAST:event_TableProductionMouseClicked
 
     private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
-        
-        
-            
+
     }//GEN-LAST:event_jScrollPane1MouseClicked
 
     private void TableResultsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TableResultsKeyPressed
@@ -972,7 +990,7 @@ public class CadProduction extends javax.swing.JFrame {
             String ProductCategory = String.valueOf(tableModel.getValueAt(TableResults.getSelectedRow(), 2));
             String ProductDesc = String.valueOf(tableModel.getValueAt(TableResults.getSelectedRow(), 3));
             String ProductValue = String.valueOf(tableModel.getValueAt(TableResults.getSelectedRow(), 4));
-            
+
             jtfProductId.setText(ProductId);
             jtfProductName.setText(ProductName);
             jtfDescription.setText(ProductDesc);
@@ -981,9 +999,33 @@ public class CadProduction extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_TableResultsMouseClicked
 
-    private void jtfDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDescriptionActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        switch(jcbFiltros.getSelectedIndex()){
+            case 0:
+            listAll((DefaultTableModel) TableResults.getModel(), new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
+            break;
+            case 1:
+            String name = jtfSearch.getText();
+            listByName((DefaultTableModel) TableResults.getModel(), new ProductsClient().getProductByName(new CertManager(), new HttpClient(), name), new LoadingDialog(this, "Por favor, aguarde..."));
+            break;
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jtfSearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfSearchKeyTyped
+
+    }//GEN-LAST:event_jtfSearchKeyTyped
+
+    private void jtfSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfSearchKeyPressed
+
+    }//GEN-LAST:event_jtfSearchKeyPressed
+
+    private void jtfSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtfDescriptionActionPerformed
+    }//GEN-LAST:event_jtfSearchActionPerformed
+
+    private void jcbTablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbTablesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbTablesActionPerformed
 
     private void jcbFiltrosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbFiltrosItemStateChanged
         if(jcbFiltros.getSelectedIndex() == 0){
@@ -995,31 +1037,11 @@ public class CadProduction extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jcbFiltrosItemStateChanged
 
-    private void jtfSearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfSearchKeyTyped
-        
-    }//GEN-LAST:event_jtfSearchKeyTyped
-
-    private void jtfSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfSearchKeyPressed
-        
-    }//GEN-LAST:event_jtfSearchKeyPressed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        switch(jcbFiltros.getSelectedIndex()){
-            case 0:
-                listAll((DefaultTableModel) TableResults.getModel(), new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
-                break;
-            case 1:
-                String name = jtfSearch.getText();
-                listByName((DefaultTableModel) TableResults.getModel(), new ProductsClient().getProductByName(new CertManager(), new HttpClient(), name), new LoadingDialog(this, "Por favor, aguarde..."));
-                break;
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jbtnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCadastrarActionPerformed
         for (int i = 0; i < TableProduction.getRowCount(); i++) {
-            
+
             Object postingId = TableProduction.getValueAt(i, 0);
-            // Object postingName = TableProduction.getValueAt(i, 1);
+            Object postingName = TableProduction.getValueAt(i, 1);
             Object postingQuantity = TableProduction.getValueAt(i, 2);
             // Object postingValue = TableProduction.getValueAt(i, 3);
             // Object postingCategory = TableProduction.getValueAt(i, 4);
@@ -1032,12 +1054,12 @@ public class CadProduction extends javax.swing.JFrame {
 
             String body =
             """
-                {
-                    "productId": "%s",
-                    "date": "%s",
-                    "amount": "%s",
-                    "observation": "%s"
-                }
+            {
+                "productId": "%s",
+                "date": "%s",
+                "amount": "%s",
+                "observation": "%s"
+            }
             """;
 
             body = String.format(body, postingId, postingDateHour, postingQuantity, postingObservation);
@@ -1048,50 +1070,13 @@ public class CadProduction extends javax.swing.JFrame {
                     new HttpClient(),
                     body),
                 new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Por favor, aguarde..."),
-                "Produção salva com sucesso.",
-                "Erro ao salvar a produção.");
+                "Produção " + " '" + postingName + "' " + " salva(o) com sucesso.",
+                "Erro ao salvar a produção do " + " '" + postingName +"'.");
         }
-        
+
         DefaultTableModel model = (DefaultTableModel) TableProduction.getModel();
         model.setRowCount(0);
     }//GEN-LAST:event_jbtnCadastrarActionPerformed
-
-    private void jtfProductNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfProductNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtfProductNameActionPerformed
-
-    private void jtfObsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfObsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtfObsActionPerformed
-
-    private void TableProductionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableProductionMouseClicked
-        
-        
-        TableProduction.addMouseListener(new MouseAdapter() {
-            @Override
-    public void mouseReleased(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            int selectedRow = TableProduction.getSelectedRow();
-            if (selectedRow >= 0) {
-                JPopupMenu popupMenu = new JPopupMenu();
-                JMenuItem item1 = new JMenuItem("Remover " + "'" + TableProduction.getValueAt(selectedRow, 1) + "'");
-                popupMenu.add(item1);
-                popupMenu.show(e.getComponent(), e.getX(), e.getY());
-
-                item1.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        DefaultTableModel model = (DefaultTableModel) TableProduction.getModel();
-                        model.removeRow(selectedRow);
-                    }
-                });
-            } else {
-                System.err.println("Nenhuma linha foi selecionada.");
-            }
-        }
-    }
-});
-    }//GEN-LAST:event_TableProductionMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1165,7 +1150,6 @@ public class CadProduction extends javax.swing.JFrame {
     private javax.swing.JButton jbtCancelar;
     private javax.swing.JButton jbtnAdicionarProduto;
     private javax.swing.JButton jbtnCadastrar;
-    private javax.swing.JButton jbtnDeletar;
     private javax.swing.JComboBox<String> jcbFiltros;
     private javax.swing.JComboBox<String> jcbTables;
     private javax.swing.JTextField jtfCategory;
