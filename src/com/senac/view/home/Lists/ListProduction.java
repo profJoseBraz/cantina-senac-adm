@@ -132,6 +132,69 @@ public class ListProduction extends javax.swing.JFrame {
                 return null;
             });
             }
+           
+            public void listByDateIgualA(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureProducts, LoadingDialog loadingDialog){
+                SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+                futureProducts.thenAccept(productions -> {
+                    tableModel.setRowCount(0);
+
+                    for (Production production : productions) {
+                        String formatteDate = MyDateFormatter.format(production.getDate(), "yyyy-MM-dd'T'HH:mm:ss.SSSX", "dd/MM/yyyy");
+                        String formattedValue = MyCurrencyFormatter.format(production.getProduct().getValue(), new Locale("pt", "BR"));
+
+                        tableModel.addRow(new Object[]{
+                            production.getId(),
+                            production.getProduct().getId(),
+                            production.getProduct().getName(),
+                            production.getProduct().getCategory().getName(),
+                            production.getProduct().getDescription(),
+                            production.getObservation(),
+                            formattedValue,
+                            production.getAmount(),
+                            formatteDate});                
+                    }
+
+                    loadingDialog.dispose();
+                }).exceptionally(ex -> {
+                    System.err.println("Erro ao listar produção: " + ex.getMessage());
+                    loadingDialog.dispose();
+                    return null;
+                });
+            }            
+            
+            
+            public void listByDateMaior(DefaultTableModel tableModel, CompletableFuture<List<Production>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(productions -> {
+                tableModel.setRowCount(0);
+
+                for (Production production : productions) {
+                    String formatteDate = MyDateFormatter.format(production.getDate(), "yyyy-MM-dd'T'HH:mm:ss.SSSX", "dd/MM/yyyy");
+                    String formattedValue = MyCurrencyFormatter.format(production.getProduct().getValue(), new Locale("pt", "BR"));
+                    
+                    tableModel.addRow(new Object[]{
+                        production.getId(),
+                        production.getProduct().getId(),
+                        production.getProduct().getName(),
+                        production.getProduct().getCategory().getName(),
+                        production.getProduct().getDescription(),
+                        production.getObservation(),
+                        formattedValue,
+                        production.getAmount(),
+                        formatteDate});                
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar produção: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+            }            
+            
+            
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -160,7 +223,7 @@ public class ListProduction extends javax.swing.JFrame {
             }
         });
 
-        jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "DATA", "NOME DO PRODUTO", "CATEGORIA" }));
+        jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "NOME DO PRODUTO", "CATEGORIA", "DATA", "DATA MAIOR QUE", "DATA MENOR QUE" }));
         jcbFilterType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jcbFilterTypeItemStateChanged(evt);
@@ -270,19 +333,31 @@ public class ListProduction extends javax.swing.JFrame {
     }//GEN-LAST:event_jcbFilterTypeActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-       switch(jcbFilterType.getSelectedIndex()){
+        String criteria = jtfFilterCriteria.getText();
+        String formattedDate = "";
+        
+        switch(jcbFilterType.getSelectedIndex()){
             case 0:
                 listAllProduction((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getAllProduction(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
+            case 2:
+//                String nameProd = jtfFilterCriteria.getText();
+                listByNameProd((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByName(new CertManager(), new HttpClient(), criteria), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
             case 3:
-                String nameProd = jtfFilterCriteria.getText();
-                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByName(new CertManager(), new HttpClient(), nameProd), new LoadingDialog(this, "Por favor, aguarde..."));
+//                String category = jtfFilterCriteria.getText();;
+                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByCategory(new CertManager(), new HttpClient(), criteria), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
             case 4:
-                String category = jtfFilterCriteria.getText();
-                listByCategory((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByCategory(new CertManager(), new HttpClient(), category), new LoadingDialog(this, "Por favor, aguarde..."));
+//                String date = jtfFilterCriteria.getText();;
+                
+                formattedDate = MyDateFormatter.format(criteria, "dd/MM/yyyy", "yyyy-MM-dd");
+                listByDateIgualA((DefaultTableModel) tableProduction.getModel(), new ProductionClient().getProductionByDateIgualA(new CertManager(), new HttpClient(), formattedDate), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
-            
+            case 5:
+                formattedDate = MyDateFormatter.format(criteria, "dd/MM/yyyy", "yyyy-MM-dd");
+                listByDateMaior((DefaultTableModel) tableProduction.getModel(),new ProductionClient().getProductionByDateMaior(new CertManager(), new HttpClient(), formattedDate), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
         }
             }//GEN-LAST:event_btnSearchActionPerformed
 

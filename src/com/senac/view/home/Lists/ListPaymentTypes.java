@@ -80,7 +80,7 @@ public class ListPaymentTypes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Title "
+                "ID", "Nome"
             }
         ) {
             boolean[] canEdit = new boolean [] {

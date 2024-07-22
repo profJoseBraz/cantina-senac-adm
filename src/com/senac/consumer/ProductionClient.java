@@ -79,4 +79,34 @@ public class ProductionClient {
 
         return resultFuture;
         }
+
+    public CompletableFuture<List<Production>> getProductionByDateIgualA(CertManager certManager, HttpClient httpClient, String date) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production", "date=" + date + "&operator==");
+
+            Gson gson = new Gson();
+            List<Production> production = gson.fromJson(res.toString(), new TypeToken<List<Production>>(){}.getType());
+
+            return production;
+        }).exceptionally(ex -> {
+            System.err.println("Method: getProductionByDateMaior - " + ex.getMessage());
+            return null;
+        });
+    }    
+    
+    public CompletableFuture<List<Production>> getProductionByDateMaior(CertManager certManager, HttpClient httpClient, String date) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production", "date=" + date + "&operator=>");
+
+            Gson gson = new Gson();
+            List<Production> production = gson.fromJson(res.toString(), new TypeToken<List<Production>>(){}.getType());
+
+            return production;
+        }).exceptionally(ex -> {
+            System.err.println("Method: getProductionByDateMaior - " + ex.getMessage());
+            return null;
+        });
+    }
 }
