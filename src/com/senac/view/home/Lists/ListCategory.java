@@ -61,6 +61,26 @@ public class ListCategory extends javax.swing.JFrame {
         });
     }
     
+    public void listById(DefaultTableModel tableModel, CompletableFuture<List<Category>> futureCategories, LoadingDialog loadingDialog){
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+        
+        futureCategories.thenAccept(categories -> {
+            tableModel.setRowCount(0);
+        
+            for (Category category : categories) {
+                tableModel.addRow(new Object[]{
+                    category.getId(),
+                    category.getName()});
+            }
+            
+            loadingDialog.dispose();
+        }).exceptionally(ex -> {
+            System.err.println("Local: listById" + ex.getMessage());
+            loadingDialog.dispose();
+            return null;
+        });
+    }
+    
     public void listByName(DefaultTableModel tableModel, CompletableFuture<List<Category>> futureCategories, LoadingDialog loadingDialog){
         SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
         

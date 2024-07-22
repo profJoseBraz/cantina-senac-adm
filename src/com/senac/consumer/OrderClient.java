@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.http.HttpClient;
 import com.senac.model.Order;
+import com.senac.model.Production;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -30,7 +31,23 @@ public class OrderClient {
             System.err.println("Error in Order method: " + ex.getMessage());
             return null; // Handle error gracefully
         });
-    } 
+    }
+    
+    public CompletableFuture<List<Order>> getOrderById(CertManager certManager, HttpClient httpClient, String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/orders", "id=" + id);
+
+            Gson gson = new Gson();
+            List<Order> order = gson.fromJson(res.toString(), new TypeToken<List<Order>>(){}.getType());
+
+            return order;
+        }).exceptionally(ex -> {
+            System.err.println("Method: getOrderByDateMenor - " + ex.getMessage());
+            return null;
+        });
+    }    
+    
     public CompletableFuture<List<Order>> getCostumerNameOrder(CertManager certManager, HttpClient httpClient, String nameCostumer) {
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
@@ -59,4 +76,50 @@ public class OrderClient {
             return null; // Handle error gracefully
         });
     }
+    
+    public CompletableFuture<List<Order>> getOrderByDateIgualA(CertManager certManager, HttpClient httpClient, String date) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/orders", "date=" + date + "&operator==");
+
+            Gson gson = new Gson();
+            List<Order> order = gson.fromJson(res.toString(), new TypeToken<List<Order>>(){}.getType());
+
+            return order;
+        }).exceptionally(ex -> {
+            System.err.println("Method: getOrderByDateMaior - " + ex.getMessage());
+            return null;
+        });
+    }    
+    
+    public CompletableFuture<List<Order>> getOrderByDateMaior(CertManager certManager, HttpClient httpClient, String date) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/orders", "date=" + date + "&operator=>");
+
+            Gson gson = new Gson();
+            List<Order> order = gson.fromJson(res.toString(), new TypeToken<List<Order>>(){}.getType());
+
+            return order;
+        }).exceptionally(ex -> {
+            System.err.println("Method: getOrderByDateMaior - " + ex.getMessage());
+            return null;
+        });
+    }
+    
+    public CompletableFuture<List<Order>> getOrderByDateMenor(CertManager certManager, HttpClient httpClient, String date) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/orders", "date=" + date + "&operator=<");
+
+            Gson gson = new Gson();
+            List<Order> order = gson.fromJson(res.toString(), new TypeToken<List<Order>>(){}.getType());
+
+            return order;
+        }).exceptionally(ex -> {
+            System.err.println("Method: getOrderByDateMenor - " + ex.getMessage());
+            return null;
+        });
+    }    
+    
 }

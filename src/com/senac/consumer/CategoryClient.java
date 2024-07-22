@@ -32,6 +32,21 @@ public class CategoryClient {
         });
     }
     
+    public CompletableFuture<List<Category>> getCategoryById(CertManager certManager, HttpClient httpClient, String id){
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/category", "Id=" + id);
+
+            Gson gson = new Gson();
+            List<Category> categories = gson.fromJson(res.toString(), new TypeToken<List<Category>>(){}.getType());
+
+            return categories;
+        }).exceptionally(ex -> {
+            System.err.println("Classe: CategoryClient | Método: getAllCategories" + ex.getMessage());
+            return null;
+        });
+    }
+    
     public CompletableFuture<List<Category>> getCategoryByName(CertManager certManager, HttpClient httpClient, String name){
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();

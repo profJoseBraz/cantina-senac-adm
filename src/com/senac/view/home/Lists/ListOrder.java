@@ -6,7 +6,9 @@ package com.senac.view.home.Lists;
 
 import com.senac.consumer.CategoryClient;
 import com.senac.consumer.OrderClient;
+import com.senac.consumer.ProductionClient;
 import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.formatters.MyDateFormatter;
 import com.senac.helpers.http.HttpClient;
 import com.senac.model.Order;
 import com.senac.view.home.LoadingDialog;
@@ -63,6 +65,29 @@ public class ListOrder extends javax.swing.JFrame {
             });
         }
         
+        public void listById(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureOrders.thenAccept(orders -> {
+                tableModel.setRowCount(0);
+
+                for (Order order : orders ) {                    
+                    tableModel.addRow(new Object[]{
+                        order.getId(), 
+                        order.getPaymentMethod().getName(), 
+                        order.getCustomerName(), 
+                        order.getDate(),
+                        order.getTime()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Order: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }        
+        
         public void listByCustomerName(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
             SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
 
@@ -109,7 +134,74 @@ public class ListOrder extends javax.swing.JFrame {
             });
         }
     
+                public void listByDateIgualA(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
 
+            futureOrders.thenAccept(orders -> {
+                tableModel.setRowCount(0);
+
+                for (Order order : orders ) {                    
+                    tableModel.addRow(new Object[]{
+                        order.getId(), 
+                        order.getPaymentMethod().getName(), 
+                        order.getCustomerName(), 
+                        order.getDate(),
+                        order.getTime()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Order: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
+                
+                public void listByDateMaiorQue(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureOrders.thenAccept(orders -> {
+                tableModel.setRowCount(0);
+
+                for (Order order : orders ) {                    
+                    tableModel.addRow(new Object[]{
+                        order.getId(), 
+                        order.getPaymentMethod().getName(), 
+                        order.getCustomerName(), 
+                        order.getDate(),
+                        order.getTime()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Order: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
+
+                public void listByDateMenorQue(DefaultTableModel tableModel, CompletableFuture<List<Order>> futureOrders, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureOrders.thenAccept(orders -> {
+                tableModel.setRowCount(0);
+
+                for (Order order : orders ) {                    
+                    tableModel.addRow(new Object[]{
+                        order.getId(), 
+                        order.getPaymentMethod().getName(), 
+                        order.getCustomerName(), 
+                        order.getDate(),
+                        order.getTime()});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Order: " + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }                
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -136,7 +228,7 @@ public class ListOrder extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 
-        jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "FORMA DE PAGAMENTO", "CLIENTE", "DATA" }));
+        jcbFilterType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ID", "FORMA DE PAGAMENTO", "CLIENTE", "DATA IGUAL A", "DATA MAIOR QUE", "DATA MENOR QUE" }));
         jcbFilterType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jcbFilterTypeItemStateChanged(evt);
@@ -244,10 +336,18 @@ public class ListOrder extends javax.swing.JFrame {
     
  
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String criteria = jtfFilterCriteria.getText();
+        String formattedDate = "";
+        
         switch(jcbFilterType.getSelectedIndex()){
             case 0:
                 listAll((DefaultTableModel) tableOrder.getModel(), new OrderClient().getAllOrder(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
+            case 1:
+                String id = jtfFilterCriteria.getText();
+                listById((DefaultTableModel) tableOrder.getModel(), new OrderClient().getOrderById(new CertManager(), new HttpClient(),id), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;                
+
             case 2:
                 String paymentMethod = jtfFilterCriteria.getText();
                 listByCustomerName((DefaultTableModel) tableOrder.getModel(), new OrderClient().getPaymentMethod(new CertManager(), new HttpClient(),paymentMethod), new LoadingDialog(this, "Por favor, aguarde..."));
@@ -256,6 +356,21 @@ public class ListOrder extends javax.swing.JFrame {
                 String nameCostumer = jtfFilterCriteria.getText();
                 listByCustomerName((DefaultTableModel) tableOrder.getModel(), new OrderClient().getCostumerNameOrder(new CertManager(), new HttpClient(),nameCostumer), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
+            case 4:
+                formattedDate = MyDateFormatter.format(criteria, "dd/MM/yyyy", "yyyy-MM-dd");
+                String dateIgualA = jtfFilterCriteria.getText();
+                listByDateIgualA((DefaultTableModel) tableOrder.getModel(), new OrderClient().getOrderByDateIgualA(new CertManager(), new HttpClient(), formattedDate), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
+            case 5:
+                formattedDate = MyDateFormatter.format(criteria, "dd/MM/yyyy", "yyyy-MM-dd");
+                String dateMaiorQue = jtfFilterCriteria.getText();
+                listByDateMaiorQue((DefaultTableModel) tableOrder.getModel(), new OrderClient().getOrderByDateMaior(new CertManager(), new HttpClient(), formattedDate), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;
+            case 6:
+                formattedDate = MyDateFormatter.format(criteria, "dd/MM/yyyy", "yyyy-MM-dd");
+                String dateMenorQue = jtfFilterCriteria.getText();
+                listByDateMenorQue((DefaultTableModel) tableOrder.getModel(), new OrderClient().getOrderByDateMenor(new CertManager(), new HttpClient(), formattedDate), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;                
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 

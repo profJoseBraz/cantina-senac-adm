@@ -17,10 +17,26 @@ import java.util.concurrent.CompletableFuture;
  * @author caetano.8918
  */
 public class ProductsClient {
-     public CompletableFuture<List<Product>> getAllProducts(CertManager certManager, HttpClient httpClient) {
+     
+    public CompletableFuture<List<Product>> getAllProducts(CertManager certManager, HttpClient httpClient) {
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
             StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/products", "");
+
+            Gson gson = new Gson();
+            List<Product> Product = gson.fromJson(res.toString(), new TypeToken<List<Product>>() {}.getType());
+
+            return Product;
+        }).exceptionally(ex -> {
+            System.err.println("Error in Product method: " + ex.getMessage());
+            return null; // Handle error gracefully
+        });
+    }
+    
+    public CompletableFuture<List<Product>> getProductsById(CertManager certManager, HttpClient httpClient, String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/products", "id=" + id);
 
             Gson gson = new Gson();
             List<Product> Product = gson.fromJson(res.toString(), new TypeToken<List<Product>>() {}.getType());

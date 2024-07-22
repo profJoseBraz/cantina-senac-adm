@@ -33,6 +33,21 @@ public class ProductionClient {
         });
     }
      
+    public CompletableFuture<List<Production>> getProductionById(CertManager certManager, HttpClient httpClient, String id){
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production", "id=" + id);
+
+            Gson gson = new Gson();
+            List<Production> production = gson.fromJson(res.toString(), new TypeToken<List<Production>>(){}.getType());
+
+            return production;
+        }).exceptionally(ex -> {
+            System.err.println("Método: getProductByCategory" + ex.getMessage());
+            return null;
+        });
+    }     
+     
     public CompletableFuture<List<Production>> getProductionByCategory(CertManager certManager, HttpClient httpClient, String category){
         return CompletableFuture.supplyAsync(() -> {
             certManager.trustAllCerts();
@@ -109,4 +124,20 @@ public class ProductionClient {
             return null;
         });
     }
+    
+    public CompletableFuture<List<Production>> getProductionByDateMenor(CertManager certManager, HttpClient httpClient, String date) {
+        return CompletableFuture.supplyAsync(() -> {
+            certManager.trustAllCerts();
+            StringBuffer res = httpClient.makeGetRequest(HttpClient.API_URL + "/production", "date=" + date + "&operator=<");
+
+            Gson gson = new Gson();
+            List<Production> production = gson.fromJson(res.toString(), new TypeToken<List<Production>>(){}.getType());
+
+            return production;
+        }).exceptionally(ex -> {
+            System.err.println("Method: getProductionByDateMenor - " + ex.getMessage());
+            return null;
+        });
+    }    
+    
 }
