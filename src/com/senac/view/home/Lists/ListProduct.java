@@ -67,7 +67,7 @@ public class ListProduct extends javax.swing.JFrame {
                 return null;
             });
         }
-
+        
         public void listByName(DefaultTableModel tableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
             SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
 
@@ -88,6 +88,31 @@ public class ListProduct extends javax.swing.JFrame {
                 loadingDialog.dispose();
             }).exceptionally(ex -> {
                 System.err.println("Erro ao listar Produtos por Nome" + ex.getMessage());
+                loadingDialog.dispose();
+                return null;
+            });
+        }
+
+        public void listById(DefaultTableModel tableModel, CompletableFuture<List<Product>> futureProducts, LoadingDialog loadingDialog){
+            SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+            futureProducts.thenAccept(products -> {
+                tableModel.setRowCount(0);
+
+                for (Product product : products) {
+                    String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
+                    
+                    tableModel.addRow(new Object[]{
+                        product.getId(),
+                        product.getName(),
+                        product.getCategory().getName(),
+                        product.getDescription(),
+                        formattedValue});
+                }
+
+                loadingDialog.dispose();
+            }).exceptionally(ex -> {
+                System.err.println("Erro ao listar Produtos por Id" + ex.getMessage());
                 loadingDialog.dispose();
                 return null;
             });
@@ -278,7 +303,10 @@ public class ListProduct extends javax.swing.JFrame {
             case 0:
                 listAll((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getAllProducts(new CertManager(), new HttpClient()), new LoadingDialog(this, "Por favor, aguarde..."));
                 break;
-                
+            case 1:
+                String id = jtfFilterCriteria.getText();
+                listById((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductsById(new CertManager(), new HttpClient(),id), new LoadingDialog(this, "Por favor, aguarde..."));
+                break;                          
             case 2:
                 String category = jtfFilterCriteria.getText();
                 listByCategory((DefaultTableModel) tableProduct.getModel(), new ProductsClient().getProductByCategory(new CertManager(), new HttpClient(), category), new LoadingDialog(this, "Por favor, aguarde..."));
