@@ -161,6 +161,7 @@ public class ListProduct extends javax.swing.JFrame {
         tableProduct = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Listagem de produtos");
 
         jPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 
@@ -227,9 +228,11 @@ public class ListProduct extends javax.swing.JFrame {
             tableProduct.getColumnModel().getColumn(0).setMinWidth(0);
             tableProduct.getColumnModel().getColumn(0).setPreferredWidth(0);
             tableProduct.getColumnModel().getColumn(0).setMaxWidth(0);
+            tableProduct.getColumnModel().getColumn(1).setMinWidth(300);
             tableProduct.getColumnModel().getColumn(1).setMaxWidth(300);
+            tableProduct.getColumnModel().getColumn(2).setMinWidth(200);
             tableProduct.getColumnModel().getColumn(2).setMaxWidth(200);
-            tableProduct.getColumnModel().getColumn(3).setMaxWidth(700);
+            tableProduct.getColumnModel().getColumn(4).setMinWidth(60);
             tableProduct.getColumnModel().getColumn(4).setMaxWidth(60);
         }
 

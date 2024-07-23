@@ -225,6 +225,7 @@ public class ListOrder extends javax.swing.JFrame {
         jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Listagem de Pedido");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 
@@ -285,11 +286,14 @@ public class ListOrder extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableOrder);
         if (tableOrder.getColumnModel().getColumnCount() > 0) {
+            tableOrder.getColumnModel().getColumn(0).setMinWidth(50);
             tableOrder.getColumnModel().getColumn(0).setMaxWidth(50);
-            tableOrder.getColumnModel().getColumn(1).setMaxWidth(350);
-            tableOrder.getColumnModel().getColumn(2).setMaxWidth(450);
-            tableOrder.getColumnModel().getColumn(3).setMaxWidth(350);
-            tableOrder.getColumnModel().getColumn(4).setMaxWidth(350);
+            tableOrder.getColumnModel().getColumn(1).setMinWidth(150);
+            tableOrder.getColumnModel().getColumn(1).setMaxWidth(150);
+            tableOrder.getColumnModel().getColumn(3).setMinWidth(100);
+            tableOrder.getColumnModel().getColumn(3).setMaxWidth(100);
+            tableOrder.getColumnModel().getColumn(4).setMinWidth(100);
+            tableOrder.getColumnModel().getColumn(4).setMaxWidth(100);
         }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);

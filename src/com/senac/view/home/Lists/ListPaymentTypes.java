@@ -72,6 +72,7 @@ public class ListPaymentTypes extends javax.swing.JFrame {
         tablePaymentTypes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Listagem de Formas de Pagamento");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Formas de pagamento"));
 
