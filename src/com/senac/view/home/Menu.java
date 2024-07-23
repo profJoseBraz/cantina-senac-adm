@@ -15,6 +15,7 @@ import com.senac.view.home.Lists.ListOrder;
 import com.senac.view.home.Lists.ListPaymentTypes;
 import com.senac.view.home.Lists.ListProduct;
 import com.senac.view.home.Lists.ListProduction;
+import com.senac.view.home.cadaster.CadOrder_OrderItems;
 import com.senac.view.home.cadaster.CadProduct;
 import com.senac.view.home.cadaster.CadProduction;
 import java.util.List;
@@ -78,9 +79,9 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jpButtons = new javax.swing.JPanel();
-        btnAddPedidos = new javax.swing.JButton();
         btnVerPedidos = new javax.swing.JButton();
         btnVisuOrder = new javax.swing.JButton();
+        btnOrder = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jmenuItemCad = new javax.swing.JMenu();
         miCadProd = new javax.swing.JMenuItem();
@@ -100,14 +101,6 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnAddPedidos.setFont(new java.awt.Font("Sitka Text", 1, 24)); // NOI18N
-        btnAddPedidos.setText("Adicionar Pedidos");
-        btnAddPedidos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddPedidosActionPerformed(evt);
-            }
-        });
-
         btnVerPedidos.setFont(new java.awt.Font("Sitka Text", 1, 24)); // NOI18N
         btnVerPedidos.setText("Ver Produtos");
         btnVerPedidos.addActionListener(new java.awt.event.ActionListener() {
@@ -124,23 +117,39 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
+        btnOrder.setFont(new java.awt.Font("Sitka Text", 1, 24)); // NOI18N
+        btnOrder.setText("Adcionar pedido");
+        btnOrder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnOrderMouseClicked(evt);
+            }
+        });
+        btnOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpButtonsLayout = new javax.swing.GroupLayout(jpButtons);
         jpButtons.setLayout(jpButtonsLayout);
         jpButtonsLayout.setHorizontalGroup(
             jpButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpButtonsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnVisuOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnVerPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAddPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jpButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpButtonsLayout.createSequentialGroup()
+                        .addGroup(jpButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnVisuOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnVerPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jpButtonsLayout.setVerticalGroup(
             jpButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpButtonsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAddPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnVerPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -162,15 +171,10 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jpButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(386, Short.MAX_VALUE))
+                .addContainerGap(303, Short.MAX_VALUE))
         );
 
         jmenuItemCad.setText("Cadastro");
-        jmenuItemCad.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                //jmenuItemCadMouseClicked(evt);
-            }
-        });
 
         miCadProd.setText("Cadastrar Produto");
         miCadProd.addActionListener(new java.awt.event.ActionListener() {
@@ -301,13 +305,6 @@ public class Menu extends javax.swing.JFrame {
         Forms.CadProduct.setVisible(true);
     }//GEN-LAST:event_miCadProdActionPerformed
 
-    private void btnAddPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPedidosActionPerformed
-        if (Forms.CadOrder == null)
-//            Forms.CadOrder = new CadOrder();
-        
-        Forms.CadOrder.setVisible(true);
-    }//GEN-LAST:event_btnAddPedidosActionPerformed
-
     private void miCadCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCadCategoriaActionPerformed
         if (Forms.CadCatergory == null)
 //            Forms.CadCatergory = new CadCatergory();
@@ -387,6 +384,17 @@ public class Menu extends javax.swing.JFrame {
         Forms.ListOrder.setVisible(true);
     }//GEN-LAST:event_miVisuPedidosActionPerformed
 
+    private void btnOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderActionPerformed
+        if(Forms.CadOrder_OrderItems == null)
+            Forms.CadOrder_OrderItems = new CadOrder_OrderItems();
+        
+        Forms.CadOrder_OrderItems.setVisible(true);
+    }//GEN-LAST:event_btnOrderActionPerformed
+
+    private void btnOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOrderMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnOrderMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -423,7 +431,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddPedidos;
+    private javax.swing.JButton btnOrder;
     private javax.swing.JButton btnVerPedidos;
     private javax.swing.JButton btnVisuOrder;
     private javax.swing.JMenu jMenu2;

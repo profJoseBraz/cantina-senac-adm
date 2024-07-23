@@ -8,6 +8,7 @@ import javax.swing.*;
 import com.senac.consumer.ProductionClient;
 import com.senac.consumer.ProductsClient;
 import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.formsRefs.Forms;
 import com.senac.helpers.http.HttpClient;
 import com.senac.model.Product;
 import com.senac.view.home.LoadingDialog;
@@ -224,7 +225,12 @@ public class CadProduction extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro categoria");
+        setTitle("Cadastro da Produção");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -947,7 +953,6 @@ public class CadProduction extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfProductIdActionPerformed
 
     private void TableProductionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableProductionMouseClicked
-
         TableProduction.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -1077,6 +1082,10 @@ public class CadProduction extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) TableProduction.getModel();
         model.setRowCount(0);
     }//GEN-LAST:event_jbtnCadastrarActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        Forms.CadProduction = null;
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

@@ -68,7 +68,7 @@ public class CadPaymentTypes extends javax.swing.JFrame {
         jButton4.setText("jButton4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro método de pagamento");
+        setTitle("Cadastro de Métodos de Pagamentos");
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 

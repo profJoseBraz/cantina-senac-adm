@@ -4,19 +4,24 @@
  */
 package com.senac.view.home.cadaster;
 
-import com.senac.consumer.PaymentMethodClient;
-import com.senac.consumer.ProductionClient;
+import com.senac.consumer.OrderClient;
 import com.senac.consumer.ProductsClient;
 import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.formsRefs.Forms;
 import com.senac.helpers.http.HttpClient;
 import com.senac.model.Product;
-import com.senac.model.PaymentMethod;
 import com.senac.view.home.LoadingDialog;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,6 +36,7 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
      */
     public CadOrder_OrderItems() {
         initComponents();
+        labelTotalCompra.setText("R$ 0,00");
         
         listAllProds(
             (DefaultTableModel) tableProducts.getModel(), 
@@ -126,8 +132,6 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
         jtfTime = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jtfDate = new javax.swing.JTextField();
-        jPanel8 = new javax.swing.JPanel();
-        labelIdCompra = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         labelTotalCompra = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -165,7 +169,12 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro categoria");
+        setTitle("Cadastro de Pedidos");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -191,7 +200,7 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jtfClientName, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
+                .addComponent(jtfClientName, javax.swing.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -294,38 +303,12 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel8.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ID da compra", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
-        jPanel8.setForeground(new java.awt.Color(255, 255, 255));
-
-        labelIdCompra.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        labelIdCompra.setForeground(new java.awt.Color(255, 255, 255));
-        labelIdCompra.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelIdCompra.setText("201");
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelIdCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelIdCompra)
-                .addGap(14, 14, 14))
-        );
-
         jPanel9.setBackground(new java.awt.Color(51, 51, 51));
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Valor total do compra", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel9.setForeground(new java.awt.Color(255, 255, 255));
 
-        labelTotalCompra.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        labelTotalCompra.setForeground(new java.awt.Color(255, 255, 255));
+        labelTotalCompra.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelTotalCompra.setForeground(new java.awt.Color(0, 204, 0));
         labelTotalCompra.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTotalCompra.setText("R$");
 
@@ -335,15 +318,12 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelTotalCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                .addComponent(labelTotalCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelTotalCompra)
-                .addGap(16, 16, 16))
+            .addComponent(labelTotalCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
         );
 
         jPanel7.setBackground(new java.awt.Color(51, 51, 51));
@@ -553,15 +533,20 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "ID DO PRODUTO", "NOME DO CLIENTE", "PRODUTO(S)", "QUANTIDADE", "SUBTOTAL"
+                "ID DO PRODUTO", "NOME DO CLIENTE", "PRODUTO(S)", "QUANTIDADE", "SUBTOTAL"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false
+                false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tableOrder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableOrderMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tableOrder);
@@ -587,7 +572,7 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -613,7 +598,7 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addComponent(jcbPayType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 3, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
@@ -643,16 +628,13 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -665,24 +647,20 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCadProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -754,18 +732,32 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
 
 
                     tablemodelorder.addRow(new String[] {
-                        labelIdCompra.getText(),
                         String.valueOf(tablemodelproducts.getValueAt(tableProducts.getSelectedRow(), 0)),
                         jtfClientName.getText(),
                         String.valueOf(tablemodelproducts.getValueAt(tableProducts.getSelectedRow(), 1)),
                         "1",
                         String.valueOf(tablemodelproducts.getValueAt(tableProducts.getSelectedRow(), 2))
                     });
+                    
+                    String cifra = "R$";
+                    int orderLength = tableOrder.getRowCount();
+                    double orderTotal = 0;
+                    
+                    for (int i = 0 ; orderLength > i ; i++) {
+                        Object catchLastPrice = tablemodelorder.getValueAt(i, 4);
+                        
+                        double lastPrice = Double.parseDouble(catchLastPrice.toString());
+                        orderTotal += lastPrice;
+                        
+                    }
+                    String stringOrderTotal = String.valueOf(orderTotal);
+                    String orderFormated = stringOrderTotal.replaceAll("\\.", ",");
+                    
+                    labelTotalCompra.setText(String.valueOf(cifra +" "+ orderFormated + "0"));
                 }
             }
         }
         catch(ArrayIndexOutOfBoundsException e){
-            JOptionPane.showMessageDialog(null, "Selecione uma forma de pagamento");
         }
     }//GEN-LAST:event_tableProductsMouseClicked
 
@@ -778,43 +770,125 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadProductsActionPerformed
 
     private void btnCadProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCadProductsMouseClicked
+           if(jcbPayType.getSelectedIndex() < 1){
+               JOptionPane.showMessageDialog(null, "Selecione um método de pagamento antes de finalizar o pedido.");
+           }
+           
+           else{
+                String openArray = "\"orderItems\":"+" [";
+            String closeArray = "]";
+            String buildingArray = "";
+            String completedArray = "";
         for (int i = 0; i < tableOrder.getRowCount(); i++) {
+            Object prodcutIdArray = tableOrder.getValueAt(i, 0);
+            Object prodcutAmountArray = tableOrder.getValueAt(i, 3);
             
-            Object postingIdProd = tableOrder.getValueAt(i, 1);
-            Object postingClientName = tableOrder.getValueAt(i, 2);
-            Object postingNameProd = tableOrder.getValueAt(i, 3);
-            Object postingAmountProd = tableOrder.getValueAt(i, 4);
-
+            String nowArray = "{" + "\"productId\":" + prodcutIdArray + "," + "\"amount\":" + prodcutAmountArray + "},";
+            
+            buildingArray += nowArray;
+            
+            completedArray = openArray + buildingArray;
+        }
+        
+            String reduceFromArray = completedArray.substring(0, completedArray.length() - 1);
+            
+            
+            String orderItems =  reduceFromArray + closeArray;
+            
+            
+            Object postingIdPayment = jcbPayType.getSelectedIndex();
+            String postingClientName = jtfClientName.getText();
+            
+            System.out.println(postingClientName);
+            System.out.println(postingIdPayment);
+            System.out.println(orderItems);
+            
+            
                 String body =
                 """
                 {
                     "paymentMethodId": "%s",
                     "customerName": "%s",
                 
-                    "orderItems": [
-                        {
-                            "productId": "%s",
-                            "amount": "%s"
-                        }
-                    ]
+                    %s
                 }
                 """;
 
-                body = String.format(body, jcbPayType.getSelectedIndex(), postingClientName, postingIdProd, postingAmountProd);
+                body = String.format(body, postingIdPayment, postingClientName, orderItems );
 
+                System.out.println(body);
                 post(
-                    new ProductionClient().postProduction(
+                    new OrderClient().postOrder(
                         new CertManager(),
                         new HttpClient(),
                         body),
                     new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Por favor, aguarde..."),
-                    "Produção " + " '" + postingNameProd + "' " + " salva(o) com sucesso.",
-                    "Erro ao salvar a produção do " + " '" + postingNameProd +"'.");
-        }
+                    "Pedido salvo com sucesso.",
+                    "Erro ao salvar o pedido.");
+
         
-        DefaultTableModel model = (DefaultTableModel) tableOrder.getModel();
-        model.setRowCount(0);
+            DefaultTableModel model = (DefaultTableModel) tableOrder.getModel();
+            model.setRowCount(0);
+            
+            String localValues = String.valueOf(LocalDateTime.now());
+            String FormatedDate = localValues.substring(0,10);
+            String FormatedTimes = localValues.substring(11,19);
+        
+            jtfDate.setText(FormatedDate);
+            jtfTime.setText(FormatedTimes);
+            jtfClientName.setText("");
+            labelTotalCompra.setText("R$ 0,00");
+           }
     }//GEN-LAST:event_btnCadProductsMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        Forms.CadOrder_OrderItems = null;
+    }//GEN-LAST:event_formWindowClosed
+
+    private void tableOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOrderMouseClicked
+        tableOrder.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    int selectedRow = tableOrder.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        JPopupMenu popupMenu = new JPopupMenu();
+                        JMenuItem item1 = new JMenuItem("Remover " + "'" + tableOrder.getValueAt(selectedRow, 2) + "'");
+                        popupMenu.add(item1);
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+
+                        item1.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                DefaultTableModel model = (DefaultTableModel) tableOrder.getModel();
+                                model.removeRow(selectedRow);
+                                DefaultTableModel tablemodelorder = (DefaultTableModel) tableOrder.getModel();
+                                String cifra = "R$";
+                                int orderLength = tableOrder.getRowCount();
+                                double orderTotal = 0;
+
+                                for (int i = 0 ; orderLength > i ; i++) {
+                                    Object catchLastPrice = tablemodelorder.getValueAt(i, 4);
+
+                                    double lastPrice = Double.parseDouble(catchLastPrice.toString());
+                                    orderTotal += lastPrice;
+
+                                }
+                                String stringOrderTotal = String.valueOf(orderTotal);
+                                String orderFormated = stringOrderTotal.replaceAll("\\.", ",");
+
+                                labelTotalCompra.setText(String.valueOf(cifra +" "+ orderFormated + "0"));
+                            }
+                        });
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nenhuma linha foi selecionada.");
+                    }
+                }
+            }
+        });
+        
+       
+    }//GEN-LAST:event_tableOrderMouseClicked
 
     /**
      * @param args the command line arguments
@@ -874,7 +948,6 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -885,7 +958,6 @@ public class CadOrder_OrderItems extends javax.swing.JFrame {
     private javax.swing.JTextField jtfDate;
     private javax.swing.JTextField jtfFiltro;
     private javax.swing.JTextField jtfTime;
-    private javax.swing.JLabel labelIdCompra;
     private javax.swing.JLabel labelTotalCompra;
     private javax.swing.JTable tableOrder;
     private javax.swing.JTable tableProducts;

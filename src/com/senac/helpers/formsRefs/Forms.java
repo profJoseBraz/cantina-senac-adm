@@ -20,7 +20,7 @@ public class Forms {
     public static JFrame ListOrder;
 
     //Order Items
-    public static JFrame CadOrderItems;
+    public static JFrame CadOrder_OrderItems;
     public static JFrame ListOrderItems;
 
     //Pagamento

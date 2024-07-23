@@ -122,4 +122,21 @@ public class OrderClient {
         });
     }    
     
+    public CompletableFuture<Boolean> postOrder(CertManager certManager, HttpClient httpClient, String body){
+        CompletableFuture<Boolean> resultFuture = new CompletableFuture<>();
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                certManager.trustAllCerts();
+                boolean res = httpClient.makePostRequest(HttpClient.API_URL + "/orders/addOrder", body);
+                resultFuture.complete(res);
+            } catch (Exception ex) {
+                System.err.println("Classe: OrderClient | Método: postOrder: " + ex.getMessage());
+                resultFuture.completeExceptionally(ex);
+            }
+        });
+
+        return resultFuture;
+        }
+    
 }
