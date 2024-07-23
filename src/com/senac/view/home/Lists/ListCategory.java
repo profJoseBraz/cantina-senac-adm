@@ -131,6 +131,7 @@ public class ListCategory extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Listagem de Categoria");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Categorias"));
 
@@ -152,6 +153,7 @@ public class ListCategory extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableCategory);
         if (tableCategory.getColumnModel().getColumnCount() > 0) {
+            tableCategory.getColumnModel().getColumn(0).setMinWidth(50);
             tableCategory.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 

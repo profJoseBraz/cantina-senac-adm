@@ -37,6 +37,7 @@ public class ListOrdersItems extends javax.swing.JFrame {
         tableOrderItems = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Listagem de Itens do Pedido ");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 

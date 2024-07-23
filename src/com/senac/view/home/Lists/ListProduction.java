@@ -272,6 +272,7 @@ public class ListProduction extends javax.swing.JFrame {
         tableProduction = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Listagem de Produção");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 
@@ -343,7 +344,17 @@ public class ListProduction extends javax.swing.JFrame {
             tableProduction.getColumnModel().getColumn(1).setMinWidth(0);
             tableProduction.getColumnModel().getColumn(1).setPreferredWidth(0);
             tableProduction.getColumnModel().getColumn(1).setMaxWidth(0);
-            tableProduction.getColumnModel().getColumn(7).setMaxWidth(100);
+            tableProduction.getColumnModel().getColumn(2).setMinWidth(150);
+            tableProduction.getColumnModel().getColumn(2).setMaxWidth(200);
+            tableProduction.getColumnModel().getColumn(3).setMinWidth(100);
+            tableProduction.getColumnModel().getColumn(3).setMaxWidth(200);
+            tableProduction.getColumnModel().getColumn(4).setMinWidth(130);
+            tableProduction.getColumnModel().getColumn(6).setMinWidth(110);
+            tableProduction.getColumnModel().getColumn(6).setMaxWidth(110);
+            tableProduction.getColumnModel().getColumn(7).setMinWidth(80);
+            tableProduction.getColumnModel().getColumn(7).setMaxWidth(80);
+            tableProduction.getColumnModel().getColumn(8).setMinWidth(80);
+            tableProduction.getColumnModel().getColumn(8).setMaxWidth(100);
         }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
