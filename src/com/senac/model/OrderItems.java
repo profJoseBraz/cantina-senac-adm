@@ -12,7 +12,11 @@ import com.google.gson.annotations.SerializedName;
  */
 public class OrderItems {
     private int id;
+    
+    @SerializedName("pedido")
     private Order order;
+    
+    @SerializedName("produto")
     private Product product;
     
     @SerializedName("quantidade")

@@ -4,6 +4,21 @@
  */
 package com.senac.view.home.Lists;
 
+import com.senac.consumer.OrderClient;
+import com.senac.consumer.OrderItemsClient;
+import com.senac.helpers.cert.CertManager;
+import com.senac.helpers.formatters.MyCurrencyFormatter;
+import com.senac.helpers.global.Constantes;
+import com.senac.helpers.http.HttpClient;
+import com.senac.model.OrderItems;
+import com.senac.view.home.LoadingDialog;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author grander.3993
@@ -15,10 +30,63 @@ public class ListOrdersItems extends javax.swing.JFrame {
      */
     public ListOrdersItems() {
         initComponents();
-        setExtendedState(MAXIMIZED_BOTH);
         
+        setLocationRelativeTo(null);
+        
+        jPanel1.setVisible(false);
+        
+        triggeList();
     }
 
+    private void listAll(DefaultTableModel tableModel, CompletableFuture<List<OrderItems>> futureOrders, LoadingDialog loadingDialog){
+        SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
+
+        tableModel.setRowCount(0);
+        
+        jlCustomerName.setText("Carregando...");
+        jlPaymentMethod.setText("Carregando...");
+        jlOrderDate.setText("Carregando...");
+        jlOrderTime.setText("Carregando...");
+        jlOrderTotal.setText("Carregando...");
+        
+        futureOrders.thenAccept(ordersItems -> {
+            jlCustomerName.setText(Constantes.customerName);
+            jlPaymentMethod.setText(Constantes.paymentMethodName);
+            jlOrderDate.setText(Constantes.orderDate);
+            jlOrderTime.setText(Constantes.orderTime);
+            
+            Double totalValue = 0.0;
+            for (OrderItems orderItem : ordersItems ) {                    
+                String orderItemValue = MyCurrencyFormatter.format(orderItem.getProduct().getValue(), new Locale("pt", "BR"));
+                
+                tableModel.addRow(new Object[]{
+                    orderItem.getId(), 
+                    orderItem.getProduct().getName(), 
+                    orderItem.getProduct().getCategory().getName(), 
+                    orderItem.getAmount(),
+                    orderItemValue
+                });
+            
+                totalValue += orderItem.getAmount() * orderItem.getProduct().getValue();
+            }
+            
+            jlOrderTotal.setText(MyCurrencyFormatter.format(totalValue, new Locale("pt", "BR")));
+            
+            loadingDialog.dispose();
+        }).exceptionally(ex -> {
+            System.err.println("Erro ao listar Order: " + ex.getMessage());
+            loadingDialog.dispose();
+            return null;
+        });
+    }
+    
+    public void triggeList(){
+        listAll(
+            (DefaultTableModel) tableOrderItems.getModel(), 
+            new OrderItemsClient().getAllOrderItemsByOrderId(new CertManager(), new HttpClient(), Constantes.selectedOrderId), 
+            new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(tableOrderItems), "Por favor, aguarde."));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,6 +103,17 @@ public class ListOrdersItems extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableOrderItems = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jlCustomerName = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jlPaymentMethod = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jlOrderDate = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jlOrderTime = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jlOrderTotal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Listagem de Itens do Pedido ");
@@ -66,11 +145,12 @@ public class ListOrdersItems extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jcbFilterType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfFilterCriteria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch))
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Itens do pedido"));
@@ -80,11 +160,11 @@ public class ListOrdersItems extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Id do pedido", "Id do Produto", "Nome do produto", "Quantidade", "Nome do cliente", "Data", "Id da categoria", "Descriçao do produto", "Id da forma de pagamento", "Valor"
+                "Id", "Produto", "Categoria", "Quantidade pedida", "Valor unitário"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -93,17 +173,15 @@ public class ListOrdersItems extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableOrderItems);
         if (tableOrderItems.getColumnModel().getColumnCount() > 0) {
-            tableOrderItems.getColumnModel().getColumn(0).setMaxWidth(50);
-            tableOrderItems.getColumnModel().getColumn(1).setMaxWidth(250);
-            tableOrderItems.getColumnModel().getColumn(2).setMaxWidth(250);
-            tableOrderItems.getColumnModel().getColumn(3).setMaxWidth(350);
-            tableOrderItems.getColumnModel().getColumn(4).setMaxWidth(200);
-            tableOrderItems.getColumnModel().getColumn(5).setMaxWidth(350);
-            tableOrderItems.getColumnModel().getColumn(6).setMaxWidth(250);
-            tableOrderItems.getColumnModel().getColumn(7).setMaxWidth(250);
-            tableOrderItems.getColumnModel().getColumn(8).setMaxWidth(450);
-            tableOrderItems.getColumnModel().getColumn(9).setMaxWidth(250);
-            tableOrderItems.getColumnModel().getColumn(10).setMaxWidth(60);
+            tableOrderItems.getColumnModel().getColumn(0).setMinWidth(0);
+            tableOrderItems.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tableOrderItems.getColumnModel().getColumn(0).setMaxWidth(0);
+            tableOrderItems.getColumnModel().getColumn(2).setMinWidth(150);
+            tableOrderItems.getColumnModel().getColumn(2).setMaxWidth(150);
+            tableOrderItems.getColumnModel().getColumn(3).setMinWidth(150);
+            tableOrderItems.getColumnModel().getColumn(3).setMaxWidth(150);
+            tableOrderItems.getColumnModel().getColumn(4).setMinWidth(100);
+            tableOrderItems.getColumnModel().getColumn(4).setMaxWidth(100);
         }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -119,7 +197,92 @@ public class ListOrdersItems extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Resumo"));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setText("Cliente:");
+
+        jlCustomerName.setText("nome_cliente");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Métod de pagamento:");
+
+        jlPaymentMethod.setText("nome_metodo_pagamento");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("Data do pedido:");
+
+        jlOrderDate.setText("data_pedido");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setText("Hora do pedido:");
+
+        jlOrderTime.setText("hora_pedido");
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel9.setText("Total do pedido:");
+
+        jlOrderTotal.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jlOrderTotal.setForeground(new java.awt.Color(51, 153, 0));
+        jlOrderTotal.setText("total_pedido");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jlCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jlPaymentMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jlOrderDate))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jlOrderTime))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlOrderTotal)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jlCustomerName)
+                    .addComponent(jLabel5)
+                    .addComponent(jlOrderDate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jlPaymentMethod)
+                    .addComponent(jLabel7)
+                    .addComponent(jlOrderTime))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jlOrderTotal))
                 .addContainerGap())
         );
 
@@ -127,10 +290,11 @@ public class ListOrdersItems extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -139,6 +303,8 @@ public class ListOrdersItems extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -188,10 +354,21 @@ public class ListOrdersItems extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> jcbFilterType;
+    private javax.swing.JLabel jlCustomerName;
+    private javax.swing.JLabel jlOrderDate;
+    private javax.swing.JLabel jlOrderTime;
+    private javax.swing.JLabel jlOrderTotal;
+    private javax.swing.JLabel jlPaymentMethod;
     private javax.swing.JTextField jtfFilterCriteria;
     private javax.swing.JTable tableOrderItems;
     // End of variables declaration//GEN-END:variables

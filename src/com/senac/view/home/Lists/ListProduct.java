@@ -50,7 +50,7 @@ public class ListProduct extends javax.swing.JFrame {
                 tableModel.setRowCount(0);
 
                 for (Product product : products ) {
-                    String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pr", "BR"));
+                    String formattedValue = MyCurrencyFormatter.format(product.getValue(), new Locale("pt", "BR"));
                     
                     tableModel.addRow(new Object[]{
                         product.getId(),

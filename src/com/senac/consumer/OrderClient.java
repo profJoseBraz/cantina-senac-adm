@@ -9,7 +9,6 @@ import com.google.gson.reflect.TypeToken;
 import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.http.HttpClient;
 import com.senac.model.Order;
-import com.senac.model.Production;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 

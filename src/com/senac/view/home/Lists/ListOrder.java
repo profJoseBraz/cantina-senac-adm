@@ -9,12 +9,21 @@ import com.senac.consumer.OrderClient;
 import com.senac.consumer.ProductionClient;
 import com.senac.helpers.cert.CertManager;
 import com.senac.helpers.formatters.MyDateFormatter;
+import com.senac.helpers.formsRefs.Forms;
+import com.senac.helpers.global.Constantes;
 import com.senac.helpers.http.HttpClient;
 import com.senac.model.Order;
 import com.senac.view.home.LoadingDialog;
+import com.senac.view.home.cadaster.CadProduct;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,6 +39,7 @@ public class ListOrder extends javax.swing.JFrame {
     public ListOrder() {
         initComponents();
         setLocationRelativeTo(null);
+        
             listAll(
                 (DefaultTableModel) tableOrder.getModel(), 
                 new OrderClient().getAllOrder(new CertManager(), new HttpClient()), 
@@ -226,6 +236,11 @@ public class ListOrder extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Listagem de Pedido");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtragem"));
 
@@ -282,6 +297,11 @@ public class ListOrder extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tableOrder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tableOrderMouseReleased(evt);
             }
         });
         jScrollPane1.setViewportView(tableOrder);
@@ -385,6 +405,46 @@ public class ListOrder extends javax.swing.JFrame {
         }else{
             jtfFilterCriteria.setEnabled(true);
         }    }//GEN-LAST:event_jcbFilterTypeItemStateChanged
+
+    private void tableOrderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOrderMouseReleased
+        int selectedRow = tableOrder.rowAtPoint(evt.getPoint());
+        
+        if(evt.getButton() == MouseEvent.BUTTON3){
+            if (selectedRow >= 0) {
+                try{
+                    Constantes.selectedOrderId = String.valueOf(tableOrder.getValueAt(selectedRow, 0));
+                    Constantes.paymentMethodName = String.valueOf(tableOrder.getValueAt(selectedRow, 1));
+                    Constantes.customerName = String.valueOf(tableOrder.getValueAt(selectedRow, 2));
+                    Constantes.orderDate = String.valueOf(tableOrder.getValueAt(selectedRow, 3));
+                    Constantes.orderTime = String.valueOf(tableOrder.getValueAt(selectedRow, 4));
+                    
+                    JPopupMenu popupMenu = new JPopupMenu();
+                    JMenuItem item1 = new JMenuItem("Ver mais...");
+                    popupMenu.add(item1);
+                    popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+
+                    item1.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if(Forms.ListOrderItems == null){
+                                Forms.ListOrderItems = new ListOrdersItems();
+                            }else{
+                                ((ListOrdersItems) Forms.ListOrderItems).triggeList();
+                            }
+
+                            Forms.ListOrderItems.setVisible(true);
+                        }
+                    });
+                }catch(ArrayIndexOutOfBoundsException e){
+                    System.err.println("Método: tableOrderMouseReleased() | Motivo: " + e.getMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_tableOrderMouseReleased
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        Forms.ListOrder = null;
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

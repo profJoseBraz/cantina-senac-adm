@@ -19,4 +19,12 @@ public class Constantes {
     public static String FileName = null;
     
     public static String SelectedCategory = null;
+    
+    //Informações para a listagem do orderItems
+    public static String selectedOrderId = null;
+    public static String paymentMethodName = null;
+    public static String customerName = null;
+    public static String orderDate = null;
+    public static String orderTime = null;
+    //
 }
